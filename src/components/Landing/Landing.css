@@ -41,3 +41,14 @@
 .landing__btn {
   margin: 30px 0;
 }
+
+@media only screen and (max-width: 800px) {
+  .landing__col {
+    flex-basis: 100%;
+    text-align: center;
+  }
+  .landing__btn {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

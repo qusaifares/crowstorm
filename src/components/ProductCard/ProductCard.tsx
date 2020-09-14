@@ -7,13 +7,15 @@ import { withStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
 import { StarBorder } from '@material-ui/icons';
 
+import DefaultRating from '../DefaultRating/DefaultRating';
+
 const StyledRating = withStyles({
   iconFilled: {
-    color: '#ff523b',
+    color: '#ff523b'
   },
   iconHover: {
-    color: '#ff523b',
-  },
+    color: '#ff523b'
+  }
 })(Rating);
 
 interface Props {
@@ -24,31 +26,18 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({ title, image, price }) => {
   return (
-    <Link to="/" className="productCard">
-      <img src={image} alt="" />
+    <Link to='/' className='productCard'>
+      <img src={image} alt={title} />
       <h4>{title}</h4>
-      <StyledRating
-        name="customized-color"
-        value={2.3}
-        getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
-        precision={0.5}
-        emptyIcon={
-          <StarBorder
-            className="productCard__ratingStar"
-            style={{ color: '#ff523b' }}
-            fontSize="inherit"
-          />
-        }
-        readOnly
-      />
+      <DefaultRating value={3} />
       <CurrencyFormat
         renderText={(value: number) => <p>{value}</p>}
         decimalScale={2}
         fixedDecimalScale={true}
-        value={12.9}
+        value={price}
         displayType={'text'}
         thousandSeparator={true}
-        prefix="$"
+        prefix='$'
       />
     </Link>
   );

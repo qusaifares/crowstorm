@@ -18,3 +18,16 @@
 .productCard:hover {
   transform: translateY(-5px);
 }
+
+@media only screen and (max-width: 800px) {
+  .productCard {
+    flex-basis: 50%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .productCard {
+    flex-basis: 100%;
+    text-align: center;
+  }
+}

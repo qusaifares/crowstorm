@@ -1,0 +1,12 @@
+.testimonial {
+  padding: 100px 25px;
+}
+
+.testimonial__row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1080px;
+  margin: auto;
+}

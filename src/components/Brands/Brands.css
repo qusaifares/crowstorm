@@ -1,0 +1,24 @@
+.brands {
+  padding: 100px 25px;
+}
+
+.brands__row {
+  margin: auto;
+  max-width: 1080px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.brands__col {
+  width: 160px;
+}
+
+.brands__col img {
+  width: 100%;
+  filter: grayscale(100%);
+}
+
+.brands__col img:hover {
+  filter: grayscale(0);
+}

@@ -1,6 +1,6 @@
 .linkButton {
   display: block;
-  background-color: #ff523b;
+  background-color: var(--orange);
   color: white;
   padding: 8px 30px;
   border-radius: 30px;

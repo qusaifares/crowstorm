@@ -1,10 +1,12 @@
 import React from 'react';
 import './Product.css';
 
-interface Props {}
+interface Props {
+  match: any;
+}
 
-const Product: React.FC<Props> = () => {
-  return <div className="product"></div>;
+const Product: React.FC<Props> = ({ match }) => {
+  return <div className='product'></div>;
 };
 
 export default Product;
