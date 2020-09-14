@@ -1,0 +1,52 @@
+:root {
+  --header-height: 90px;
+  --header-inner-height: 50px;
+}
+
+.header {
+  height: var(--header-height);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  z-index: 99;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0);
+  transition: all 0.3s;
+}
+
+.header-background {
+  background: white;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1300px;
+  height: var(--header-inner-height);
+  padding: 0 45px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header__logo {
+  height: 100%;
+}
+
+.header__inner > nav {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header__inner > nav > a {
+  display: block;
+  margin-right: 20px;
+  color: #555;
+}
+
+.header__cartIcon {
+  width: 30px;
+}

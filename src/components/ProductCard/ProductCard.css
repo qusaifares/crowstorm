@@ -1,0 +1,20 @@
+.productCard {
+  flex-basis: 25%;
+  padding: 10px;
+  min-width: 200px;
+  margin-bottom: 50px;
+  transition: transform 0.5s;
+  color: inherit;
+}
+
+.productCard img {
+  width: 100%;
+}
+
+.productCard p {
+  font-size: 14px;
+}
+
+.productCard:hover {
+  transform: translateY(-5px);
+}
