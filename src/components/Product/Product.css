@@ -1,0 +1,30 @@
+.product {
+  padding: 0 45px;
+}
+
+.product__row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.product__col {
+  flex-basis: 50%;
+  min-width: 300px;
+}
+
+.product__mainImg {
+  max-width: 100%;
+}
+
+.product select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid black;
+}
+
+.product select:focus {
+  outline: none;
+}

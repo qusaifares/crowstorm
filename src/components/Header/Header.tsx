@@ -23,11 +23,13 @@ const Header: React.FC<Props> = () => {
   return (
     <header className={`header ${background ? 'header-background' : ''}`}>
       <div className='header__inner'>
-        <img
-          className='header__logo'
-          src={`${PUBLIC_URL}/images/icon-black.png`}
-          alt='Logo'
-        />
+        <Link to='/' className='header__logoLink'>
+          <img
+            className='header__logo'
+            src={`${PUBLIC_URL}/images/icon-black.png`}
+            alt='Logo'
+          />
+        </Link>
         <IconButton
           onClick={() => setNavOpen(!navOpen)}
           className='header__menuButton'

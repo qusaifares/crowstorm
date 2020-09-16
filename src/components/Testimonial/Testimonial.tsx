@@ -2,6 +2,8 @@ import React from 'react';
 import './Testimonial.css';
 import TestimonialCard from '../TestimonialCard/TestimonialCard';
 
+const { PUBLIC_URL } = process.env;
+
 interface Props {}
 
 const Testimonial: React.FC<Props> = () => {
@@ -12,7 +14,7 @@ const Testimonial: React.FC<Props> = () => {
           rating={4}
           author={{
             name: 'Samantha Cook',
-            image: `${process.env.PUBLIC_URL}/images/test/user-1.png`
+            image: `${PUBLIC_URL}/images/test/user-1.png`
           }}
           text='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia qui excepturi atque exercitationem tempore minus!'
         />
@@ -20,7 +22,7 @@ const Testimonial: React.FC<Props> = () => {
           rating={5}
           author={{
             name: 'Sean Parker',
-            image: `${process.env.PUBLIC_URL}/images/test/user-2.png`
+            image: `${PUBLIC_URL}/images/test/user-2.png`
           }}
           text='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia qui excepturi atque exercitationem tempore minus!'
         />
@@ -28,7 +30,7 @@ const Testimonial: React.FC<Props> = () => {
           rating={5}
           author={{
             name: 'Amy Lee',
-            image: `${process.env.PUBLIC_URL}/images/test/user-3.png`
+            image: `${PUBLIC_URL}/images/test/user-3.png`
           }}
           text='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia qui excepturi atque exercitationem tempore minus!'
         />
