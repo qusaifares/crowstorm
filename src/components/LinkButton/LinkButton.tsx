@@ -1,33 +1,33 @@
-import React, { ElementType } from 'react';
+import React, { useState, ElementType } from 'react';
+import { LinkProps } from '@material-ui/core';
 import './LinkButton.css';
 import { Link } from 'react-router-dom';
 
-interface Props extends React.Props<any> {
+interface Props {
   to: string;
-  component?: React.ComponentType<any> | ElementType;
-  // componentProps?: object;
+  linkProps?: React.PropsWithoutRef<LinkProps<any>> &
+    React.RefAttributes<HTMLAnchorElement>;
   className?: string;
   children?: React.ReactNode;
 }
 
 const LinkButton: React.FC<Props> = ({
-  component: Tag,
-  to,
   className,
   children,
-  ...componentProps
+  to,
+  linkProps,
 }) => {
-  return Tag ? (
-    <Tag
+  return to ? (
+    // @ts-ignore
+    <Link
       className={`linkButton ${className ? className : ''}`}
-      {...componentProps}
+      to={to}
+      {...linkProps}
     >
       {children}
-    </Tag>
-  ) : (
-    <Link to={to} className={`linkButton ${className ? className : ''}`}>
-      {children}
     </Link>
+  ) : (
+    <div className={`linkButton ${className ? className : ''}`}>{children}</div>
   );
 };
 

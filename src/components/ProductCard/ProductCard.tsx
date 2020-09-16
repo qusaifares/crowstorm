@@ -11,11 +11,11 @@ import DefaultRating from '../DefaultRating/DefaultRating';
 
 const StyledRating = withStyles({
   iconFilled: {
-    color: '#ff523b'
+    color: '#ff523b',
   },
   iconHover: {
-    color: '#ff523b'
-  }
+    color: '#ff523b',
+  },
 })(Rating);
 
 interface Props {
@@ -26,7 +26,7 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({ title, image, price }) => {
   return (
-    <Link to='/' className='productCard'>
+    <Link to="/products/1" className="productCard">
       <img src={image} alt={title} />
       <h4>{title}</h4>
       <DefaultRating value={3} />
@@ -37,7 +37,7 @@ const ProductCard: React.FC<Props> = ({ title, image, price }) => {
         value={price}
         displayType={'text'}
         thousandSeparator={true}
-        prefix='$'
+        prefix="$"
       />
     </Link>
   );
