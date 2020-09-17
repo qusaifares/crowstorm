@@ -3,7 +3,7 @@ import './Product.css';
 import CurrencyFormat from 'react-currency-format';
 import ProductCategory from '../ProductCategory/ProductCategory';
 import ProductCard from '../ProductCard/ProductCard';
-import LinkButton from '../LinkButton/LinkButton';
+import CustomButton from '../Buttons/CustomButton';
 
 const { PUBLIC_URL } = process.env;
 
@@ -13,15 +13,33 @@ interface Props {
 
 const Product: React.FC<Props> = ({ match }) => {
   const [arr1, setArr1] = useState([1, 2, 3, 4]);
+  const [mainImg, setMainImg] = useState(1);
+  const [quantityString, setQuantityString] = useState<number>(1);
+  const updateQuantityString = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (quantityString >= 1 && quantityString % 1 === 0) return;
+    if (!quantityString || quantityString < 1) return setQuantityString(1);
+    if (quantityString % 1)
+      return setQuantityString(Math.floor(quantityString));
+  };
   return (
     <div className='product'>
-      <div className='product__row'>
+      <div className='product__row product__row1'>
         <div className='product__col product__left'>
           <img
-            src={`${PUBLIC_URL}/images/test/gallery-1.jpg`}
+            src={`${PUBLIC_URL}/images/test/gallery-${mainImg}.jpg`}
             alt=''
             className='product__mainImg'
           />
+          <div className='product__smallImgRow'>
+            {arr1.map((num) => (
+              <img
+                onClick={() => setMainImg(num)}
+                className='product__smallImg'
+                src={`${PUBLIC_URL}/images/test/gallery-${num}.jpg`}
+                alt=''
+              />
+            ))}
+          </div>
         </div>
         <div className='product__col product__right'>
           <p>Home / T-Shirt</p>
@@ -42,10 +60,28 @@ const Product: React.FC<Props> = ({ match }) => {
             <option>Medium</option>
             <option>Small</option>
           </select>
-          <LinkButton to='/product/1'>Add to cart</LinkButton>
+          <input
+            type='number'
+            id='product__quantity'
+            min={1}
+            step={1}
+            value={quantityString}
+            onChange={(e) => setQuantityString(e.target.valueAsNumber)}
+            onBlur={updateQuantityString}
+          />
+          {/*@ts-ignore*/}
+          <CustomButton onClick={() => console.log('hello')}>
+            Add to cart
+          </CustomButton>
+          <h3 className='product__detailsHeader'>Product Details</h3>
+          <p>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+            dolores dolorum ea repellat at laboriosam beatae nostrum soluta
+            culpa vero.
+          </p>
         </div>
       </div>
-      <ProductCategory>
+      <ProductCategory title='Related Products' right={<div></div>}>
         {arr1.map((num) => (
           <ProductCard
             title='Red Printed T-Shirt'

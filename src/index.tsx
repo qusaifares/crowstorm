@@ -5,6 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter as Router } from 'react-router-dom';
 
+import { ScrollToTop } from './ScrollToTop';
+
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './themes/theme';
+
 import { StateProvider } from './store/StateProvider';
 import reducer, { initialState } from './store/reducer';
 
@@ -12,7 +17,11 @@ ReactDOM.render(
   <React.StrictMode>
     <StateProvider initialState={initialState} reducer={reducer}>
       <Router>
-        <App />
+        <ScrollToTop>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </ScrollToTop>
       </Router>
     </StateProvider>
   </React.StrictMode>,

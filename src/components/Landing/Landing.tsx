@@ -1,7 +1,7 @@
 import React from 'react';
 import './Landing.css';
 import { Link } from 'react-router-dom';
-import LinkButton from '../LinkButton/LinkButton';
+import LinkButton from '../Buttons/LinkButton';
 
 const { PUBLIC_URL } = process.env;
 

@@ -1,0 +1,22 @@
+.linkButton,
+.customButton {
+  display: block;
+  background-color: var(--orange);
+  color: white;
+  padding: 8px 30px;
+  outline: none;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  width: fit-content;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  transition: background-color 0.4s;
+}
+
+.linkButton:hover,
+.customButton:hover {
+  background-color: #563434;
+}

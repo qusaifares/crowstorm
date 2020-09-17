@@ -1,7 +1,7 @@
 import React from 'react';
 import './Offer.css';
 
-import LinkButton from '../LinkButton/LinkButton';
+import LinkButton from '../Buttons/LinkButton';
 
 interface Props {}
 

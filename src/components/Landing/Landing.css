@@ -18,7 +18,7 @@
   max-width: 650px;
   min-width: 320px;
   padding: 20px;
-  flex: 0.5;
+  flex-basis: 50%;
 }
 
 .landing__left > h1 {

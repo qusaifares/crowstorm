@@ -2,6 +2,8 @@
 
 :root {
   --orange: #ff523b;
+  --error-color: #912d2b;
+  --error-bg: #fce3e3;
 }
 
 * {
