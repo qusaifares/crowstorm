@@ -1,6 +1,8 @@
 import React from 'react';
 import './Cart.css';
 
+import CustomButtons from '../Buttons/CustomButton';
+
 interface Props {}
 
 const Cart: React.FC<Props> = () => {
@@ -50,6 +52,7 @@ const Cart: React.FC<Props> = () => {
           </tr>
         </table>
       </div>
+      <CustomButtons>Checkout</CustomButtons>
     </div>
   );
 };

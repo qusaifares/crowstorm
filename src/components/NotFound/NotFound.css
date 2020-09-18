@@ -1,0 +1,40 @@
+.notFound {
+  min-height: 100vh;
+  margin-top: calc(-1 * var(--header-height));
+  display: grid;
+  place-items: center;
+}
+
+.notFound__content {
+  /* border: 1px solid black; */
+  width: 600px;
+  max-width: 80vw;
+}
+
+.notFound h1 {
+  text-transform: uppercase;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.notFound h1 > span {
+  color: var(--orange);
+}
+
+.notFound h2 {
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.notFound p {
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .notFound {
+    text-align: center;
+  }
+  .notFound .linkButton {
+    margin: 0 auto;
+  }
+}

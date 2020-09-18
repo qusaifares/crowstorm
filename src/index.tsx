@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter as Router } from 'react-router-dom';
 
-import { ScrollToTop } from './ScrollToTop';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './themes/theme';
@@ -17,11 +17,10 @@ ReactDOM.render(
   <React.StrictMode>
     <StateProvider initialState={initialState} reducer={reducer}>
       <Router>
-        <ScrollToTop>
-          <ThemeProvider theme={theme}>
-            <App />
-          </ThemeProvider>
-        </ScrollToTop>
+        <ScrollToTop />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </Router>
     </StateProvider>
   </React.StrictMode>,
