@@ -16,10 +16,7 @@ const TestimonialCard: React.FC<Props> = ({ author, text, rating }) => {
   return (
     <div className='testimonialCard'>
       <FormatQuote className='testimonialCard__quote' />
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam saepe
-        quis adipisci maxime sint beatae animi nam quasi quas nisi?
-      </p>
+      <p>{text}</p>
       <div className='testimonialCard__rating'>
         <DefaultRating value={rating} />
       </div>

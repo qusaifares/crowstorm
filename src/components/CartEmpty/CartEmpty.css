@@ -1,0 +1,18 @@
+.cartEmpty {
+  max-width: 1080px;
+  margin: var(--header-height) auto;
+  padding: 0 20px;
+  min-height: calc(100vh - 3 * var(--header-height));
+  display: grid;
+  place-items: center;
+}
+
+.cartEmpty__content {
+  display: grid;
+  place-items: center;
+  margin-bottom: 40px;
+}
+
+.cartEmpty__content p {
+  margin: 20px 0;
+}

@@ -13,8 +13,8 @@ const Footer: React.FC<Props> = () => {
           <h3>Download Our App</h3>
           <p>Download App for Android and iOS</p>
           <div className='footer__appLogos'>
-            <img src={`${PUBLIC_URL}/images/test/play-store.png`} alt='' />
-            <img src={`${PUBLIC_URL}/images/test/app-store.png`} alt='' />
+            <img src={`${PUBLIC_URL}/images/products/play-store.png`} alt='' />
+            <img src={`${PUBLIC_URL}/images/products/app-store.png`} alt='' />
           </div>
         </div>
         <div className='footer__col footer__col2'>
@@ -22,10 +22,10 @@ const Footer: React.FC<Props> = () => {
             src={`${PUBLIC_URL}/images/logo-white.png`}
             alt='Crowstorm Logo'
           />
-          <p>
+          {/* <p>
             Our purpose is Lorem ipsum dolor, sit amet consectetur adipisicing
             elit. Numquam, aliquam.
-          </p>
+          </p> */}
         </div>
         <div className='footer__col footer__col3'>
           <h3>Useful Links</h3>

@@ -10,19 +10,22 @@ const Brands: React.FC<Props> = () => {
     <div className='brands'>
       <div className='brands__row'>
         <div className='brands__col'>
-          <img src={`${PUBLIC_URL}/images/test/logo-godrej.png`} alt='' />
+          <img src={`${PUBLIC_URL}/images/products/logo-godrej.png`} alt='' />
         </div>
         <div className='brands__col'>
-          <img src={`${PUBLIC_URL}/images/test/logo-oppo.png`} alt='' />
+          <img src={`${PUBLIC_URL}/images/products/logo-oppo.png`} alt='' />
         </div>
         <div className='brands__col'>
-          <img src={`${PUBLIC_URL}/images/test/logo-coca-cola.png`} alt='' />
+          <img
+            src={`${PUBLIC_URL}/images/products/logo-coca-cola.png`}
+            alt=''
+          />
         </div>
         <div className='brands__col'>
-          <img src={`${PUBLIC_URL}/images/test/logo-paypal.png`} alt='' />
+          <img src={`${PUBLIC_URL}/images/products/logo-paypal.png`} alt='' />
         </div>
         <div className='brands__col'>
-          <img src={`${PUBLIC_URL}/images/test/logo-philips.png`} alt='' />
+          <img src={`${PUBLIC_URL}/images/products/logo-philips.png`} alt='' />
         </div>
       </div>
     </div>

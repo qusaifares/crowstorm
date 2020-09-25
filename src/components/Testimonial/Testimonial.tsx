@@ -14,25 +14,26 @@ const Testimonial: React.FC<Props> = () => {
           rating={4}
           author={{
             name: 'Samantha Cook',
-            image: `${PUBLIC_URL}/images/test/user-1.png`
+            image: `${PUBLIC_URL}/images/products/user-1.png`
           }}
-          text='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia qui excepturi atque exercitationem tempore minus!'
+          text='Great service, Great clothes and FAST delivery!! Loved the dress, now buying more! Happy! Happy!
+          '
         />
         <TestimonialCard
           rating={5}
           author={{
             name: 'Sean Parker',
-            image: `${PUBLIC_URL}/images/test/user-2.png`
+            image: `${PUBLIC_URL}/images/products/user-2.png`
           }}
-          text='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia qui excepturi atque exercitationem tempore minus!'
+          text='I am very happy with the products I received, that came very quickly and everyone that I got them for loved them.'
         />
         <TestimonialCard
           rating={5}
           author={{
             name: 'Amy Lee',
-            image: `${PUBLIC_URL}/images/test/user-3.png`
+            image: `${PUBLIC_URL}/images/products/user-3.png`
           }}
-          text='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia qui excepturi atque exercitationem tempore minus!'
+          text='I absolutely adore the trendy styles this store offers. The clothes fit so well and they look amazing!'
         />
       </div>
     </div>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import CurrencyFormat from 'react-currency-format';
 import { withStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
-import { StarBorder } from '@material-ui/icons';
+import { IProduct } from '../Product/Product';
 
 import DefaultRating from '../DefaultRating/DefaultRating';
 
@@ -19,22 +19,23 @@ const StyledRating = withStyles({
 })(Rating);
 
 interface Props {
-  title: string;
-  image: string;
-  price: number;
+  product: IProduct;
 }
 
-const ProductCard: React.FC<Props> = ({ title, image, price }) => {
+const ProductCard: React.FC<Props> = ({ product }) => {
   return (
-    <Link to='/product/1' className='productCard'>
-      <img src={image} alt={title} />
-      <h4>{title}</h4>
-      <DefaultRating value={3} />
+    <Link to={`/product/${product._id}`} className='productCard'>
+      <img src={product.images[0]} alt={product.title} />
+
+      <h4>{product.title}</h4>
+      <DefaultRating
+        value={product.ratingData.stars || Math.floor(Math.random() * 2 + 4)}
+      />
       <CurrencyFormat
         renderText={(value: number) => <p>{value}</p>}
         decimalScale={2}
         fixedDecimalScale={true}
-        value={price}
+        value={product.price}
         displayType={'text'}
         thousandSeparator={true}
         prefix='$'

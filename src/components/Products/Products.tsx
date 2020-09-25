@@ -1,36 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Products.css';
 import ProductCategory from '../ProductCategory/ProductCategory';
 import ProductCard from '../ProductCard/ProductCard';
 import { FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
+import { IProduct } from '../Product/Product';
+
+const { REACT_APP_SERVER_URL } = process.env;
 
 interface Props {}
-interface sortType {
+interface SortType {
   name: string;
   value: string;
-  sort: (arr: sortType[]) => sortType[];
+  sort: (a: any, b: any) => any;
+}
+interface SortTypes {
+  priceLowest: SortType;
+  priceHighest: SortType;
+  ratingHighest?: SortType;
 }
 const Products: React.FC<Props> = () => {
-  const sortTypes = {
+  const sortTypes: SortTypes = {
     priceLowest: {
       name: 'Price (Lowest)',
       value: 'priceLowest',
-      sort: (arr: any[]) => arr.sort((a, b) => a.price - b.price)
+      sort: (a, b) => a.price - b.price
     },
     priceHighest: {
       name: 'Price (Highest)',
       value: 'priceHighest',
-      sort: (arr: any[]) => arr.sort((a, b) => b.price - a.price)
-    },
-    ratingHighest: {
-      name: 'Rating (Highest)',
-      value: 'ratingHighest',
-      sort: (arr: any[]) => arr.sort((a, b) => b.rating - a.rating)
+      sort: (a, b) => b.price - a.price
+    }
+    // ratingHighest: {
+    //   name: 'Rating (Highest)',
+    //   value: 'ratingHighest',
+    //   sort: (a, b) => b.ratingData.stars - a.ratingData.stars
+    // }
+  };
+  const [selectedSort, setSelectedSort] = useState<string>('priceLowest');
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [pages, setPages] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [productsPerPage, setProductsPerPage] = useState<number>(8);
+
+  const getProducts = async () => {
+    try {
+      const res = await fetch(`${REACT_APP_SERVER_URL}/products`);
+      const data: IProduct[] = await res.json();
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const [arr2, setArr2] = useState([5, 6, 7, 8, 9, 10, 11, 12]);
-  const [selectedSort, setSelectedSort] = useState<string>('priceLowest');
+  useEffect(() => {
+    getProducts();
+    return () => {
+      setProducts([]);
+      setSelectedSort('priceLowest');
+    };
+  }, []);
+
+  // return to page one when changing sort
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedSort]);
+
+  // set page buttons
+  useEffect(() => {
+    const numberOfPages = Math.ceil(products.length / productsPerPage);
+    let tempPages = [];
+    for (let i = 1; i <= numberOfPages; i++) {
+      tempPages.push(i);
+    }
+    setPages(tempPages);
+    return () => {
+      setPages([]);
+    };
+  }, [products, productsPerPage]);
   return (
     <div className='products'>
       <ProductCategory
@@ -46,26 +92,39 @@ const Products: React.FC<Props> = () => {
               onChange={(e) => setSelectedSort(e.target.value)}
             >
               {Object.values(sortTypes).map((v) => (
-                <option value={v?.value}>{v?.name}</option>
+                <option key={v?.value} value={v?.value}>
+                  {v?.name}
+                </option>
               ))}
             </select>
           </>
         }
+        footer={
+          <div className='products__pageBtns'>
+            {pages.map((num) => (
+              <div
+                key={num}
+                onClick={() => setCurrentPage(num)}
+                className={`products__pageBtn ${
+                  currentPage === num ? 'products__pageBtn-current' : ''
+                }`}
+              >
+                {num}
+              </div>
+            ))}
+          </div>
+        }
       >
-        {arr2.map((num) => (
-          <ProductCard
-            title='Red Printed T-Shirt'
-            image={`${process.env.PUBLIC_URL}/images/test/product-${num}.jpg`}
-            price={10.9}
-          />
-        ))}
-        <div className='products__pageBtns'>
-          <div className='products__pageBtn products__pageBtn-current'>1</div>
-          <div className='products__pageBtn'>2</div>
-          <div className='products__pageBtn'>3</div>
-          <div className='products__pageBtn'>4</div>
-          <div className='products__pageBtn'>&#8594;</div>
-        </div>
+        {products
+          // @ts-ignore
+          .sort(sortTypes[selectedSort].sort)
+          .slice(
+            (currentPage - 1) * productsPerPage,
+            currentPage * productsPerPage
+          )
+          .map((prod) => (
+            <ProductCard key={prod._id} product={prod} />
+          ))}
       </ProductCategory>
     </div>
   );

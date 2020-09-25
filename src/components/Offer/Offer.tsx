@@ -11,7 +11,7 @@ const Offer: React.FC<Props> = () => {
       <div className='offer__container'>
         <div className='offer__col offer__left'>
           <img
-            src={`${process.env.PUBLIC_URL}/images/test/exclusive.png`}
+            src={`${process.env.PUBLIC_URL}/images/products/exclusive.png`}
             alt='Offer'
             className='offer__img'
           />
@@ -20,11 +20,14 @@ const Offer: React.FC<Props> = () => {
           <p>Exclusively Available at Crowstorm</p>
           <h1>Smart Band 4</h1>
           <small>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta
-            delectus numquam facere commodi deleniti! Recusandae voluptatem
-            molestias in optio quae.
+            Get fit and stay healthy with the Smart Band 4. This fitness tracker
+            provides you with a variety of fitness and health tracking options,
+            as well as practical functionality.
           </small>
-          <LinkButton to='/' className='offer__btn'>
+          <LinkButton
+            to='/product/5f6be7647044365c274f2a60'
+            className='offer__btn'
+          >
             Buy Now
           </LinkButton>
         </div>

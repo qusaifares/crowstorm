@@ -1,14 +1,18 @@
 .productCard {
-  flex-basis: 25%;
   padding: 10px;
   min-width: 200px;
+  height: 420px;
+  width: 257px;
   margin-bottom: 50px;
   transition: transform 0.5s;
   color: inherit;
 }
+/* 258x342 */
 
 .productCard img {
   width: 100%;
+  height: 315px;
+  object-fit: cover;
 }
 
 .productCard p {
@@ -21,7 +25,11 @@
 
 @media only screen and (max-width: 800px) {
   .productCard {
-    flex-basis: 50%;
+    width: 267px;
+    height: 434px;
+  }
+  .productCard img {
+    height: 330px;
   }
 }
 
@@ -29,5 +37,9 @@
   .productCard {
     flex-basis: 100%;
     text-align: center;
+    height: auto;
+  }
+  .productCard img {
+    height: auto;
   }
 }

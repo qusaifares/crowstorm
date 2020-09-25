@@ -18,11 +18,13 @@
 }
 
 .products__pageBtns {
-  margin: 0 auto 80px auto;
+  margin-bottom: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .products__pageBtn {
-  display: inline-block;
   border: 1px solid var(--orange);
   margin: 0 5px;
   width: 40px;

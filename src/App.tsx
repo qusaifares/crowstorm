@@ -16,7 +16,7 @@ import { ActionType } from './store/reducer';
 const { REACT_APP_SERVER_URL } = process.env;
 
 const App = () => {
-  const [{ pageTitle }, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
 
   const persist = async () => {
@@ -53,9 +53,6 @@ const App = () => {
     persist();
   }, []);
 
-  useEffect(() => {
-    document.title = pageTitle;
-  }, [pageTitle]);
   return (
     <div className='app'>
       <Header />
@@ -70,9 +67,7 @@ const App = () => {
         <Route exact path='/cart' component={Cart} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Signup} />
-        <Route exact path='/404' component={NotFound} />
-        <Route exact path='/404' component={NotFound} />
-        <Route exact path='*' component={() => <Redirect to='/404' />} />
+        <Route exact path='*' component={NotFound} />
       </Switch>
       <Footer />
     </div>

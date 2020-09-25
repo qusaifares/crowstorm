@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Signup.css';
 import { Link, useHistory } from 'react-router-dom';
 import { FormControl, TextField, FormHelperText } from '@material-ui/core';
@@ -20,6 +20,11 @@ const Signup: React.FC<Props> = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errorText, setErrorText] = useState<string | null>();
+
+  useEffect(() => {
+    const signupTitle = 'Sign Up | CrowStorm';
+    document.title = signupTitle;
+  }, []);
 
   const signup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -43,16 +43,33 @@
   justify-content: flex-end;
 }
 
-.header__inner > nav > a {
+.header__navLink {
   display: block;
   margin-right: 20px;
   color: #555;
+  cursor: pointer;
+}
+
+.header__navLink-active {
+  position: relative;
+  font-weight: bold;
 }
 
 .header__icons {
   display: flex;
   align-items: center;
   justify-self: flex-end;
+}
+
+.header .MuiBadge-badge {
+  right: -3px !important;
+  top: 9px !important;
+  padding: 0 4px !important;
+  border: 2px solid transparent;
+}
+
+.header-background .MuiBadge-badge {
+  border-color: white;
 }
 
 .header__cartIcon {
@@ -94,7 +111,7 @@
     padding: 10px 0;
   }
 
-  .header__inner > nav > a {
+  .header__navLink {
     color: #fff;
     margin: 10px 60px 10px 0;
     width: fit-content;

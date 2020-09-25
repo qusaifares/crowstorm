@@ -1,28 +1,35 @@
 import React from 'react';
 import './Landing.css';
-import { Link } from 'react-router-dom';
-import LinkButton from '../Buttons/LinkButton';
+import CustomButton from '../Buttons/CustomButton';
+
+import { useStateValue } from '../../store/StateProvider';
 
 const { PUBLIC_URL } = process.env;
 
 interface Props {}
 
 const Landing: React.FC<Props> = () => {
+  const [{ user }, dispatch] = useStateValue();
+  const goToFeatured = () => {
+    const featured = document.getElementById('featured');
+    console.log(featured?.offsetTop);
+    // @ts-ignore
+    window.scrollTo({ top: featured?.offsetTop - 110, behavior: 'smooth' });
+  };
+
   return (
     <div className='landing'>
       <div className='landing__col landing__left'>
+        {user && <h2>Welcome, {user.name.first}!</h2>}
         <h1>
-          Level Up
+          Explore Your
           <br />
-          Your Style.
+          True Style.
         </h1>
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla est
-          temporibus, quaerat architecto optio eum.
-        </p>
-        <LinkButton to='/' className='landing__btn'>
+        <p>Make a style statement with our unique selection.</p>
+        <CustomButton onClick={goToFeatured} className='landing__btn'>
           Explore Now &#8594;
-        </LinkButton>
+        </CustomButton>
       </div>
       <div className='landing__col landing__right'>
         <img
