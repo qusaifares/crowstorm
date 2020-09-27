@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Products.css';
 import ProductCategory from '../ProductCategory/ProductCategory';
 import ProductCard from '../ProductCard/ProductCard';
-import { FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { IProduct } from '../Product/Product';
 
 const { REACT_APP_SERVER_URL } = process.env;
@@ -101,17 +101,21 @@ const Products: React.FC<Props> = () => {
         }
         footer={
           <div className='products__pageBtns'>
-            {pages.map((num) => (
-              <div
-                key={num}
-                onClick={() => setCurrentPage(num)}
-                className={`products__pageBtn ${
-                  currentPage === num ? 'products__pageBtn-current' : ''
-                }`}
-              >
-                {num}
-              </div>
-            ))}
+            {pages.length ? (
+              pages.map((num) => (
+                <div
+                  key={num}
+                  onClick={() => setCurrentPage(num)}
+                  className={`products__pageBtn ${
+                    currentPage === num ? 'products__pageBtn-current' : ''
+                  }`}
+                >
+                  {num}
+                </div>
+              ))
+            ) : (
+              <CircularProgress />
+            )}
           </div>
         }
       >

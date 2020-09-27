@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Login.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FormControl, TextField, FormHelperText } from '@material-ui/core';
 
 import CustomButton from '../Buttons/CustomButton';
@@ -8,12 +8,13 @@ import GoogleLogo from '../icons/GoogleLogo';
 
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
+import { signin } from '../../helpers/api';
+import { googleAuth } from '../../helpers/auth';
 
-const { PUBLIC_URL, REACT_APP_SERVER_URL } = process.env;
+const { PUBLIC_URL } = process.env;
 interface Props {}
 
 const Login: React.FC<Props> = () => {
-  const history = useHistory();
   const [{ user }, dispatch] = useStateValue();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -24,38 +25,42 @@ const Login: React.FC<Props> = () => {
     document.title = loginTitle;
   }, []);
 
-  const signin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitSignin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorText(null);
-    const body: BodyInit = JSON.stringify({
+    const signinData = {
       email,
       password
-    });
-    const options: RequestInit = {
-      method: 'POST',
-      body,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
     };
     try {
-      const res = await fetch(`${REACT_APP_SERVER_URL}/users/login/`, options);
-      const data = await res.json();
+      const data = await signin(signinData);
 
       if (!data._id) throw data;
 
       dispatch({ type: ActionType.SET_USER, user: data });
-      localStorage.setItem('email', data.email);
-      history.push('/');
     } catch (error) {
       setErrorText(error.message);
     }
   };
+
+  const handleGoogleAuth = async () => {
+    try {
+      const data = await googleAuth();
+      dispatch({ type: ActionType.SET_USER, user: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (user?._id && window.location.pathname === '/login') {
+    console.log(window.location.pathname);
+    return <Redirect to='/' />;
+  }
+
   return (
     <div className='login'>
       <FormControl>
-        <form onSubmit={signin} className='login__loginForm'>
+        <form onSubmit={submitSignin} className='login__loginForm'>
           <img
             src={`${PUBLIC_URL}/images/icon-black.png`}
             alt=''
@@ -96,7 +101,7 @@ const Login: React.FC<Props> = () => {
           )}
           <CustomButton>Sign In</CustomButton>
           <div className='login__or'>OR</div>
-          <div className='login__socialButton'>
+          <div className='login__socialButton' onClick={handleGoogleAuth}>
             <GoogleLogo />
           </div>
           <p className='login__switchPrompt'>

@@ -43,11 +43,14 @@ const App = () => {
       if (!data._id) throw data;
 
       dispatch({ type: ActionType.SET_USER, user: data });
-      history.push('/');
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (user?.email) localStorage.setItem('email', user.email);
+  }, [user]);
 
   useEffect(() => {
     persist();

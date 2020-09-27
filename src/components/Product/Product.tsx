@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Product.css';
+import { Link } from 'react-router-dom';
 import CurrencyFormat from 'react-currency-format';
+import { CircularProgress } from '@material-ui/core';
 import ProductCategory from '../ProductCategory/ProductCategory';
 import ProductCard from '../ProductCard/ProductCard';
 import CustomButton from '../Buttons/CustomButton';
 import NotFound from '../NotFound/NotFound';
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router-dom';
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
 import { CartItem } from '../Cart/Cart';
+import productOptions from '../../helpers/productOptions';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
@@ -29,11 +32,14 @@ export enum Color {
 
 // Enum of product types (Keep consistent with client side)
 export enum ProductType {
-  Jacket = 'Jacket',
-  Shirt = 'Shirt',
+  Jackets = 'Jackets',
+  Sweaters = 'Sweaters',
+  Shirts = 'Shirts',
   Pants = 'Pants',
-  Watch = 'Watch',
+  Watches = 'Watches',
   Footwear = 'Footwear',
+  Socks = 'Socks',
+  Underwear = 'Underwear',
   Other = 'Other'
 }
 
@@ -63,11 +69,13 @@ interface Props {
 }
 
 const Product: React.FC<Props> = ({ match }) => {
-  const history = useHistory();
+  // const history = useHistory();
   const [{ cart }, dispatch] = useStateValue();
   const [product, setProduct] = useState<IProduct | undefined>();
   const [relatedProducts, setRelatedProducts] = useState<IProduct[]>([]);
   const [mainImg, setMainImg] = useState<string | null>(null);
+  const [sizes, setSizes] = useState<any[]>();
+  const [size, setSize] = useState<any>();
   const [quantity, setQuantity] = useState<number>(1);
   const [notFound, setNotFound] = useState<boolean>(false);
 
@@ -123,8 +131,18 @@ const Product: React.FC<Props> = ({ match }) => {
 
   useEffect(() => {
     getProductInfo();
-    getRelatedProducts();
   }, [match.params.id]);
+
+  useEffect(() => {
+    if (product) {
+      getRelatedProducts();
+      const tempSizes = productOptions[product.productType];
+      if (tempSizes) {
+        setSizes(tempSizes);
+        setSize(tempSizes[0]);
+      }
+    }
+  }, [product]);
 
   if (notFound) return <NotFound />;
 
@@ -132,64 +150,90 @@ const Product: React.FC<Props> = ({ match }) => {
     <div className='product'>
       <div className='product__inner'>
         <div className='product__row product__row1'>
-          <div className='product__col product__left'>
-            <img
-              src={mainImg || ''}
-              alt={product?.title}
-              className='product__mainImg'
-            />
-            <div className='product__smallImgRow'>
-              {product?.images?.map((img) => (
+          {product ? (
+            <>
+              <div className='product__col product__left'>
                 <img
-                  key={img}
-                  onClick={() => setMainImg(img)}
-                  className='product__smallImg'
-                  src={img}
-                  alt=''
+                  src={mainImg || ''}
+                  alt={product?.title}
+                  className='product__mainImg'
                 />
-              ))}
-            </div>
-          </div>
-          <div className='product__col product__right'>
-            <p>Home / {product?.productType}</p>
-            <h1>{product?.title}</h1>
-            <CurrencyFormat
-              renderText={(value: number) => <h4>{value}</h4>}
-              decimalScale={2}
-              fixedDecimalScale={true}
-              value={product?.price}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix='$'
-            />
-            <select id='product__sizeMenu'>
-              <option>XXL</option>
-              <option>XL</option>
-              <option>Large</option>
-              <option>Medium</option>
-              <option>Small</option>
-            </select>
-            <input
-              type='number'
-              id='product__quantity'
-              min={1}
-              step={1}
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.valueAsNumber)}
-              onBlur={updateQuantity}
-            />
-            {/*@ts-ignore*/}
-            <CustomButton onClick={addToCart}>Add to cart</CustomButton>
-            <h3 className='product__detailsHeader'>Product Details</h3>
-            <p>{product?.description}</p>
-          </div>
+                <div className='product__smallImgRow'>
+                  {product?.images?.map((img) => (
+                    <img
+                      key={img}
+                      onClick={() => setMainImg(img)}
+                      className='product__smallImg'
+                      src={img}
+                      alt=''
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className='product__col product__right'>
+                <p>
+                  <Link to='/products'>Home</Link> / {product?.productType}
+                </p>
+                <h1>{product?.title}</h1>
+                <CurrencyFormat
+                  renderText={(value: number) => (
+                    <h4 className='product__price'>{value}</h4>
+                  )}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  value={product?.price}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix='$'
+                />
+                {sizes && (
+                  <select
+                    value={size}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                      if (!isNaN(+e.target.value)) {
+                        setSize(+e.target.value);
+                      } else {
+                        setSize(e.target.value);
+                      }
+                    }}
+                    id='product__sizeMenu'
+                  >
+                    {sizes?.map((opt) => (
+                      <option value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                )}
+                <input
+                  type='number'
+                  id='product__quantity'
+                  min={1}
+                  step={1}
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.valueAsNumber)}
+                  onBlur={updateQuantity}
+                />
+                {/*@ts-ignore*/}
+                <CustomButton onClick={addToCart}>Add to cart</CustomButton>
+                <h3 className='product__detailsHeader'>Product Details</h3>
+                <p>{product?.description}</p>
+              </div>
+            </>
+          ) : (
+            <CircularProgress />
+          )}
         </div>
       </div>
-      <ProductCategory title='Related Products' right={<div></div>}>
-        {relatedProducts.map((prod) => (
-          <ProductCard key={prod._id} product={prod} />
-        ))}
-      </ProductCategory>
+      {product && (
+        <ProductCategory title='Related Products' right={<div></div>}>
+          {relatedProducts.length ? (
+            relatedProducts.map((prod) => (
+              <ProductCard key={prod._id} product={prod} />
+            ))
+          ) : (
+            <CircularProgress />
+          )}
+        </ProductCategory>
+      )}
     </div>
   );
 };

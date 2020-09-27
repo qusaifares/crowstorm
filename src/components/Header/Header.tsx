@@ -32,7 +32,6 @@ const Header: React.FC<Props> = () => {
   }, [background]);
 
   const scrollToLanding = () => {
-    console.log(window.location.pathname);
     if (window.location.pathname === '/') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

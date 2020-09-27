@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Signup.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FormControl, TextField, FormHelperText } from '@material-ui/core';
 
 import CustomButton from '../Buttons/CustomButton';
@@ -9,11 +9,13 @@ import GoogleLogo from '../icons/GoogleLogo';
 import { ActionType } from '../../store/reducer';
 import { useStateValue } from '../../store/StateProvider';
 
-const { PUBLIC_URL, REACT_APP_SERVER_URL } = process.env;
+import { googleAuth } from '../../helpers/auth';
+import { signup } from '../../helpers/api';
+
+const { PUBLIC_URL } = process.env;
 interface Props {}
 
 const Signup: React.FC<Props> = () => {
-  const history = useHistory();
   const [{ user }, dispatch] = useStateValue();
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -26,46 +28,44 @@ const Signup: React.FC<Props> = () => {
     document.title = signupTitle;
   }, []);
 
-  const signup = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorText(null);
-    const body: BodyInit = JSON.stringify({
+    const signupData = {
       name: {
         first: firstName,
         last: lastName
       },
       email,
       password
-    });
-    const options: RequestInit = {
-      method: 'POST',
-      body,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
     };
     try {
-      const res = await fetch(
-        `${REACT_APP_SERVER_URL}/users/register/`,
-        options
-      );
-      const data = await res.json();
+      const data = await signup(signupData);
 
       if (!data._id) throw data;
 
       dispatch({ type: ActionType.SET_USER, user: data });
-      localStorage.setItem('email', data.email);
-      history.push('/');
     } catch (error) {
       setErrorText(error.message);
     }
   };
 
+  const handleGoogleAuth = async () => {
+    try {
+      const data = await googleAuth();
+      dispatch({ type: ActionType.SET_USER, user: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (user?._id && window.location.pathname === '/register')
+    return <Redirect to='/' />;
+
   return (
     <div className='signup'>
       <FormControl>
-        <form onSubmit={signup} className='signup__signupForm'>
+        <form onSubmit={submitSignup} className='signup__signupForm'>
           <img
             src={`${PUBLIC_URL}/images/icon-black.png`}
             alt=''
@@ -130,7 +130,7 @@ const Signup: React.FC<Props> = () => {
           )}
           <CustomButton type='submit'>Sign Up</CustomButton>
           <div className='signup__or'>OR</div>
-          <div className='signup__socialButton'>
+          <div className='signup__socialButton' onClick={handleGoogleAuth}>
             <GoogleLogo />
           </div>
           <p className='signup__switchPrompt'>
