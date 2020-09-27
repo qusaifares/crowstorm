@@ -4,7 +4,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { FormControl, TextField, FormHelperText } from '@material-ui/core';
 
 import CustomButton from '../Buttons/CustomButton';
+import AuthButton from '../AuthButton/AuthButton';
 import GoogleLogo from '../icons/GoogleLogo';
+// import TwitterLogo from '../icons/TwitterLogo';
+// import FacebookLogo from '../icons/FacebookLogo';
 
 import { ActionType } from '../../store/reducer';
 import { useStateValue } from '../../store/StateProvider';
@@ -130,8 +133,18 @@ const Signup: React.FC<Props> = () => {
           )}
           <CustomButton type='submit'>Sign Up</CustomButton>
           <div className='signup__or'>OR</div>
-          <div className='signup__socialButton' onClick={handleGoogleAuth}>
-            <GoogleLogo />
+          <div className='signup__socialButtons'>
+            {/* <AuthButton
+              onClick={facebookAuth}
+              icon={FacebookLogo}
+              className='authButton__facebook'
+            /> */}
+            <AuthButton onClick={handleGoogleAuth} icon={GoogleLogo} />
+            {/* <AuthButton
+              onClick={twitterAuth}
+              className='authButton__twitter'
+              icon={TwitterLogo}
+            /> */}
           </div>
           <p className='signup__switchPrompt'>
             Have an account? <Link to='/login'>Log In</Link>

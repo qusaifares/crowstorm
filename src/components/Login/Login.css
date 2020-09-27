@@ -81,29 +81,9 @@
   right: 0;
 }
 
-.login__socialButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid lightgray;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.login__socialButton:hover {
-  transform: scale(1.1);
-}
-
-.login__socialButton svg {
-  width: 50%;
-  filter: brightness(0);
-  transition: filter 0.2s;
-}
-
-.login__socialButton:hover svg {
-  filter: brightness(100%);
+.login__socialButtons {
+  display: flex;
+  justify-content: center;
 }
 
 .login__switchPrompt {

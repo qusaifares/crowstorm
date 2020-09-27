@@ -1,0 +1,51 @@
+.authButton {
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+  border-radius: 50%;
+  border: 2px solid lightgray;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.authButton svg {
+  max-width: 50%;
+  max-height: 50%;
+  filter: brightness(0);
+  transition: filter 0.2s;
+}
+
+.authButton:hover svg {
+  filter: brightness(100%);
+}
+
+.authButton__facebook,
+.authButton__twitter {
+  background-color: white;
+}
+
+.authButton__facebook path,
+.authButton__twitter path {
+  fill: white;
+}
+
+.authButton__facebook:hover {
+  background-color: #3b5998;
+}
+
+.authButton__twitter:hover {
+  background-color: #47a3da;
+}
+
+.authButton__twitter svg {
+  transform: translateY(2px);
+}
+
+.authButton:hover {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+}

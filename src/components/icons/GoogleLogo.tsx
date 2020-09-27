@@ -5,7 +5,7 @@ interface Props {}
 const GoogleLogo: React.FC<Props> = () => {
   return (
     <svg
-      className='googleLogo'
+      className='authLogo'
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 533.5 544.3'
     >

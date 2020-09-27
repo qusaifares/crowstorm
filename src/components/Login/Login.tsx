@@ -4,7 +4,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { FormControl, TextField, FormHelperText } from '@material-ui/core';
 
 import CustomButton from '../Buttons/CustomButton';
+import AuthButton from '../AuthButton/AuthButton';
 import GoogleLogo from '../icons/GoogleLogo';
+// import TwitterLogo from '../icons/TwitterLogo';
+// import FacebookLogo from '../icons/FacebookLogo';
 
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
@@ -101,8 +104,18 @@ const Login: React.FC<Props> = () => {
           )}
           <CustomButton>Sign In</CustomButton>
           <div className='login__or'>OR</div>
-          <div className='login__socialButton' onClick={handleGoogleAuth}>
-            <GoogleLogo />
+          <div className='login__socialButtons'>
+            {/* <AuthButton
+              onClick={handleGoogleAuth}
+              icon={FacebookLogo}
+              className='authButton__facebook'
+            /> */}
+            <AuthButton onClick={handleGoogleAuth} icon={GoogleLogo} />
+            {/* <AuthButton
+              onClick={handleGoogleAuth}
+              className='authButton__twitter'
+              icon={TwitterLogo}
+            /> */}
           </div>
           <p className='login__switchPrompt'>
             New to CrowStorm? <Link to='/register'>Create Account</Link>

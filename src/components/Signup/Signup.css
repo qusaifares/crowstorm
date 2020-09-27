@@ -78,29 +78,9 @@
   right: 0;
 }
 
-.signup__socialButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid lightgray;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.signup__socialButton:hover {
-  transform: scale(1.1);
-}
-
-.signup__socialButton svg {
-  width: 50%;
-  filter: brightness(0);
-  transition: filter 0.2s;
-}
-
-.signup__socialButton:hover svg {
-  filter: brightness(100%);
+.signup__socialButtons {
+  display: flex;
+  justify-content: center;
 }
 
 .signup__switchPrompt {

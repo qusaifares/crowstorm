@@ -1,4 +1,9 @@
-import { auth, googleProvider } from '../config/firebase';
+import {
+  auth,
+  googleProvider
+  // facebookProvider,
+  // twitterProvider
+} from '../config/firebase';
 import { IUser } from '../customTypes/customTypes';
 const { REACT_APP_SERVER_URL } = process.env;
 
@@ -34,3 +39,23 @@ export const googleAuth = async () => {
     return error;
   }
 };
+
+// export const facebookAuth = async () => {
+//   try {
+//     const result = await auth.signInWithPopup(facebookProvider);
+//     console.log(result);
+//   } catch (error) {
+//     console.log(error);
+//     return error;
+//   }
+// };
+
+// export const twitterAuth = async () => {
+//   try {
+//     const result = await auth.signInWithPopup(twitterProvider);
+//     console.log(result);
+//   } catch (error) {
+//     console.log(error);
+//     return error;
+//   }
+// };
