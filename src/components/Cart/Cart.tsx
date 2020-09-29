@@ -1,17 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Cart.css';
 import CurrencyFormat from 'react-currency-format';
 
-import CustomButtons from '../Buttons/CustomButton';
+import LinkButton from '../Buttons/LinkButton';
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
 import { IProduct } from '../Product/Product';
 import CartEmpty from '../CartEmpty/CartEmpty';
+import OrderTotals from '../OrderTotals/OrderTotals';
+import { getCartDetails, updateCart } from '../../helpers/api';
+import { Button, CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { red, blue } from '@material-ui/core/colors';
+
+const useStyles = makeStyles((theme) => ({
+  removeWrapper: {
+    position: 'relative',
+    width: 'max-content'
+    // display: 'inline-block'
+  },
+  removeButton: {
+    background: red[900]
+  },
+  removeProgress: {
+    color: red[900],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -9,
+    marginLeft: -9
+  }
+}));
 
 interface Props {}
 
+export interface CartItemBase {
+  product: string;
+  quantity: number;
+}
 export interface CartItem {
-  productId?: string;
   product: IProduct;
   quantity: number;
 }
@@ -19,22 +46,40 @@ export interface CartItem {
 const Cart: React.FC<Props> = () => {
   const [{ cart, user }, dispatch] = useStateValue();
   const taxRate = 0.07;
+  const [cartDetails, setCartDetails] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState<number>(0);
   const [tax, setTax] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
+  const [removing, setRemoving] = useState<number | null>(null);
+  const isMounted = useRef(false);
+  const classes = useStyles();
 
-  const removeItem = (i: number) => {
-    let tempCart = cart;
+  const removeItem = async (i: number) => {
+    setRemoving(i);
+    let tempCart: CartItemBase[] = cart;
     tempCart.splice(i, 1);
+    if (user?._id) {
+      const cartData: CartItem[] = await updateCart(tempCart);
+    }
     dispatch({
       type: ActionType.UPDATE_CART,
       cart: tempCart
     });
+
     updateTotal();
+    setRemoving(null);
+  };
+
+  const fetchCartDetails = async () => {
+    if (!cart.length) return;
+    const cartData = await getCartDetails();
+    if (!Array.isArray(cartData)) return;
+    if (!isMounted.current) return;
+    setCartDetails(cartData);
   };
 
   const updateTotal = () => {
-    const sum = (cart as CartItem[]).reduce(
+    const sum = cartDetails.reduce(
       (a, v) => a + v.product.price * v.quantity,
       0
     );
@@ -44,13 +89,22 @@ const Cart: React.FC<Props> = () => {
   };
 
   useEffect(() => {
-    updateTotal();
+    isMounted.current = true;
     return () => {
+      isMounted.current = false;
       setSubtotal(0);
       setTax(0);
       setTotal(0);
     };
+  }, []);
+
+  useEffect(() => {
+    fetchCartDetails();
   }, [cart]);
+
+  useEffect(() => {
+    updateTotal();
+  }, [cartDetails]);
 
   if (!cart.length) return <CartEmpty />;
 
@@ -65,7 +119,7 @@ const Cart: React.FC<Props> = () => {
           </tr>
         </thead>
         <tbody>
-          {(cart as CartItem[]).map((item, i) => (
+          {cartDetails.map((item, i) => (
             <tr key={item.product._id}>
               <td>
                 <div className='cart__productInfo'>
@@ -83,11 +137,25 @@ const Cart: React.FC<Props> = () => {
                       thousandSeparator={true}
                       prefix='$'
                     />
-                    <div
-                      onClick={() => removeItem(i)}
-                      className='cart__removeProduct'
-                    >
-                      Remove
+                    <div className={classes.removeWrapper}>
+                      <Button
+                        size='small'
+                        onClick={() => removeItem(i)}
+                        disabled={removing !== null}
+                        className={classes.removeButton}
+                        color='primary'
+                        variant='contained'
+                        style={{ transform: 'scale(0.8)' }}
+                      >
+                        Remove
+                      </Button>
+                      {removing === i && (
+                        <CircularProgress
+                          className={classes.removeProgress}
+                          size={18}
+                          color='secondary'
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -109,54 +177,10 @@ const Cart: React.FC<Props> = () => {
         </tbody>
       </table>
       <div className='cart__total'>
-        <table className='cart__totalTable'>
-          <tbody>
-            <tr>
-              <td>Subtotal</td>
-              <td>
-                <CurrencyFormat
-                  renderText={(value: number) => value}
-                  decimalScale={2}
-                  fixedDecimalScale={true}
-                  value={subtotal}
-                  displayType={'text'}
-                  thousandSeparator={true}
-                  prefix='$'
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Tax</td>
-              <td>
-                <CurrencyFormat
-                  renderText={(value: number) => value}
-                  decimalScale={2}
-                  fixedDecimalScale={true}
-                  value={tax}
-                  displayType={'text'}
-                  thousandSeparator={true}
-                  prefix='$'
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Total</td>
-              <td>
-                <CurrencyFormat
-                  renderText={(value: number) => value}
-                  decimalScale={2}
-                  fixedDecimalScale={true}
-                  value={total}
-                  displayType={'text'}
-                  thousandSeparator={true}
-                  prefix='$'
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <OrderTotals subtotal={subtotal} tax={tax} total={total} />
       </div>
-      <CustomButtons>Checkout</CustomButtons>
+
+      <LinkButton to='/checkout'>Checkout</LinkButton>
     </div>
   );
 };

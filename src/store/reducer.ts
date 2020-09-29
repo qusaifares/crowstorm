@@ -1,9 +1,10 @@
-import { CartItem } from '../components/Cart/Cart';
+import { IUser } from './../customTypes/customTypes';
+import { CartItemBase } from '../components/Cart/Cart';
 
 export interface Action {
   type: ActionType;
-  user?: object | null; // SET_USER
-  cart?: CartItem[]; // UPDATE_CART
+  user?: IUser | null; // SET_USER
+  cart?: CartItemBase[]; // UPDATE_CART
 }
 
 export enum ActionType {
@@ -13,7 +14,7 @@ export enum ActionType {
 
 export interface State {
   user: object | null;
-  cart: CartItem[];
+  cart: CartItemBase[];
 }
 
 export const initialState: State = {
@@ -22,17 +23,25 @@ export const initialState: State = {
 };
 
 const reducer = (state: State, action: Action) => {
+  console.log(action);
+
   switch (action.type) {
     case ActionType.SET_USER:
       return {
         ...state,
+        cart: action.user?.cart || [],
         user: action.user
       };
     case ActionType.UPDATE_CART:
-      return {
-        ...state,
-        cart: action.cart
-      };
+      localStorage.setItem('cart', JSON.stringify(action.cart || []));
+      if (action.cart) {
+        return {
+          ...state,
+          cart: [...(action.cart as CartItemBase[])]
+        };
+      } else {
+        return state;
+      }
   }
 };
 

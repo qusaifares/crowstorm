@@ -1,3 +1,4 @@
+import { CartItemBase } from './../components/Cart/Cart';
 interface Address {
   street: string;
   city: string;
@@ -21,6 +22,7 @@ export interface IUser {
     country: string;
     zip: string;
   };
+  cart?: CartItemBase[];
   orders?: string[];
   googleId?: string;
   createdAt?: Date;

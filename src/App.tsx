@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './App.css';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -9,6 +9,7 @@ import Products from './components/Products/Products';
 import Product from './components/Product/Product';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
+import Checkout from './components/Checkout/Checkout';
 import NotFound from './components/NotFound/NotFound';
 import { useStateValue } from './store/StateProvider';
 import { ActionType } from './store/reducer';
@@ -16,8 +17,10 @@ import { ActionType } from './store/reducer';
 const { REACT_APP_SERVER_URL } = process.env;
 
 const App = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, cart }, dispatch] = useStateValue();
   const history = useHistory();
+
+  const isMounted = useRef(false);
 
   const persist = async () => {
     const email = localStorage.getItem('email');
@@ -41,7 +44,7 @@ const App = () => {
       const data = await res.json();
 
       if (!data._id) throw data;
-
+      if (!isMounted.current) return;
       dispatch({ type: ActionType.SET_USER, user: data });
     } catch (error) {
       console.log(error);
@@ -53,7 +56,21 @@ const App = () => {
   }, [user]);
 
   useEffect(() => {
+    isMounted.current = true;
     persist();
+    const localCart = localStorage.getItem('cart');
+    console.log(!!localCart);
+    if (localCart) {
+      dispatch({
+        type: ActionType.UPDATE_CART,
+        cart: JSON.parse(localCart || '[]')
+      });
+    } else {
+      localStorage.setItem('cart', JSON.stringify(cart || []));
+    }
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   return (
@@ -70,6 +87,7 @@ const App = () => {
         <Route exact path='/cart' component={Cart} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Signup} />
+        <Route exact path='/checkout' component={Checkout} />
         <Route exact path='*' component={NotFound} />
       </Switch>
       <Footer />

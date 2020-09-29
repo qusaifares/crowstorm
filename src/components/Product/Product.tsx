@@ -10,8 +10,9 @@ import NotFound from '../NotFound/NotFound';
 // import { useHistory } from 'react-router-dom';
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
-import { CartItem } from '../Cart/Cart';
+import { CartItem, CartItemBase } from '../Cart/Cart';
 import productOptions from '../../helpers/productOptions';
+import { updateCart } from '../../helpers/api';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
@@ -70,18 +71,19 @@ interface Props {
 
 const Product: React.FC<Props> = ({ match }) => {
   // const history = useHistory();
-  const [{ cart }, dispatch] = useStateValue();
+  const [{ user, cart }, dispatch] = useStateValue();
   const [product, setProduct] = useState<IProduct | undefined>();
   const [relatedProducts, setRelatedProducts] = useState<IProduct[]>([]);
   const [mainImg, setMainImg] = useState<string | null>(null);
-  const [sizes, setSizes] = useState<any[]>();
+  const [sizes, setSizes] = useState<any[]>([]);
   const [size, setSize] = useState<any>();
   const [quantity, setQuantity] = useState<number>(1);
   const [notFound, setNotFound] = useState<boolean>(false);
 
   const updateQuantity = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (quantity >= 1 && quantity % 1 === 0) return;
+    if (quantity >= 1 && quantity <= 99 && quantity % 1 === 0) return;
     if (!quantity || quantity < 1) return setQuantity(1);
+    if (quantity > 99) return setQuantity(99);
     if (quantity % 1) return setQuantity(Math.floor(quantity));
   };
 
@@ -111,26 +113,51 @@ const Product: React.FC<Props> = ({ match }) => {
     }
   };
 
-  const addToCart = () => {
+  const addToCart = async () => {
     if (!product) return;
-    const itemIndex = (cart as CartItem[]).findIndex(
-      (item) => product?._id && item.product?._id === product?._id
+    const itemIndex = (cart as CartItemBase[]).findIndex(
+      (item) => product?._id && item.product === product?._id
     );
-    let tempCart: CartItem[] = cart;
+    let tempCart: CartItemBase[] = cart;
     if (itemIndex !== -1) {
       tempCart[itemIndex].quantity = tempCart[itemIndex].quantity + quantity;
     } else {
       tempCart.push({
-        productId: product?._id,
-        product,
+        product: product._id,
         quantity
       });
     }
-    dispatch({ type: ActionType.UPDATE_CART, cart: tempCart });
+    try {
+      if (user?._id) {
+        const cartData: CartItem[] = await updateCart(tempCart);
+        console.log('add cart data', cartData);
+        dispatch({
+          type: ActionType.UPDATE_CART,
+          cart: cartData.map<CartItemBase>((item) => ({
+            product: item.product._id,
+            quantity: item.quantity
+          }))
+        });
+      } else {
+        dispatch({ type: ActionType.UPDATE_CART, cart: tempCart });
+      }
+      setQuantity(1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     getProductInfo();
+    return () => {
+      setNotFound(false);
+      setQuantity(1);
+      setProduct(undefined);
+      setRelatedProducts([]);
+      setMainImg(null);
+      setSizes([]);
+      setSize(undefined);
+    };
   }, [match.params.id]);
 
   useEffect(() => {
@@ -186,7 +213,7 @@ const Product: React.FC<Props> = ({ match }) => {
                   thousandSeparator={true}
                   prefix='$'
                 />
-                {sizes && (
+                {sizes.length ? (
                   <select
                     value={size}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -199,14 +226,17 @@ const Product: React.FC<Props> = ({ match }) => {
                     id='product__sizeMenu'
                   >
                     {sizes?.map((opt) => (
-                      <option value={opt}>{opt}</option>
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
                     ))}
                   </select>
-                )}
+                ) : null}
                 <input
                   type='number'
                   id='product__quantity'
                   min={1}
+                  max={99}
                   step={1}
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.valueAsNumber)}

@@ -41,6 +41,7 @@ const Login: React.FC<Props> = () => {
       if (!data._id) throw data;
 
       dispatch({ type: ActionType.SET_USER, user: data });
+      // dispatch({ type: ActionType.UPDATE_CART, cart: data.cart });
     } catch (error) {
       setErrorText(error.message);
     }

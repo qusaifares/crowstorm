@@ -10,7 +10,7 @@
   border-collapse: collapse;
 }
 
-.cart table th {
+.cart__table th {
   text-align: left;
   padding: 5px;
   color: #fff;
@@ -18,11 +18,11 @@
   font-weight: normal;
 }
 
-.cart table td {
+.cart__table td {
   padding: 10px 5px;
 }
 
-.cart table td input {
+.cart__table td input {
   width: 40px;
   height: 30px;
   padding: 5px;
@@ -35,7 +35,7 @@
   cursor: pointer;
 }
 
-.cart table td img {
+.cart__table td img {
   width: 80px;
   height: 80px;
   object-fit: cover;
@@ -52,19 +52,12 @@
   justify-content: flex-end;
 }
 
-.cart__totalTable {
-  border-collapse: collapse;
-  width: 100%;
-  max-width: 380px;
-  border-top: 2px solid var(--orange);
-}
-
 th:last-child,
 td:last-child {
   text-align: right !important;
 }
 
-.cart .customButton {
+.cart .linkButton {
   margin-left: auto;
   margin-top: 10px;
 }

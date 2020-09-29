@@ -20,6 +20,7 @@ const Header: React.FC<Props> = () => {
     if (!user._id) return history.push('/');
     dispatch({ type: ActionType.SET_USER, user: null });
     localStorage.removeItem('email');
+    localStorage.setItem('cart', JSON.stringify([]));
     history.push('/');
   };
   useEffect(() => {

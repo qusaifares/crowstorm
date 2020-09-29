@@ -1,0 +1,18 @@
+.orderTotals {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 380px;
+  border-top: 2px solid var(--orange);
+}
+
+.orderTotals th {
+  text-align: left;
+  padding: 5px;
+  color: #fff;
+  background: var(--orange);
+  font-weight: normal;
+}
+
+.orderTotals td {
+  padding: 10px 5px;
+}

@@ -1,12 +1,15 @@
+import { CartItemBase } from './../components/Cart/Cart';
 const { REACT_APP_SERVER_URL } = process.env;
 
-export const signup = async (bodyObject: object) => {
+const credentials = 'include';
+
+export const signup = async (info: object) => {
   try {
-    const body = JSON.stringify(bodyObject);
+    const body = JSON.stringify(info);
     const options: RequestInit = {
       method: 'POST',
       body,
-      credentials: 'include',
+      credentials,
       headers: {
         'Content-Type': 'application/json'
       }
@@ -19,12 +22,12 @@ export const signup = async (bodyObject: object) => {
   }
 };
 
-export const signin = async (bodyObject: object) => {
-  const body = JSON.stringify(bodyObject);
+export const signin = async (info: object) => {
+  const body = JSON.stringify(info);
   const options: RequestInit = {
     method: 'POST',
     body,
-    credentials: 'include',
+    credentials,
     headers: {
       'Content-Type': 'application/json'
     }
@@ -33,6 +36,37 @@ export const signin = async (bodyObject: object) => {
     const res = await fetch(`${REACT_APP_SERVER_URL}/users/login/`, options);
     const data = await res.json();
     return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCartDetails = async () => {
+  try {
+    const res = await fetch(`${REACT_APP_SERVER_URL}/users/cart`, {
+      credentials
+    });
+    const data = await res.json();
+    console.log(data);
+    return data.cart;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateCart = async (cart: CartItemBase[]) => {
+  const body = JSON.stringify(cart);
+  try {
+    const res = await fetch(`${REACT_APP_SERVER_URL}/users/cart`, {
+      method: 'PUT',
+      body,
+      credentials,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await res.json();
+    return data.cart;
   } catch (error) {
     console.log(error);
   }

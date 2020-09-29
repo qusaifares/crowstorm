@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Featured.css';
 import ProductCategory from '../ProductCategory/ProductCategory';
 import ProductCard from '../ProductCard/ProductCard';
@@ -12,21 +12,26 @@ interface Props {}
 const Featured: React.FC<Props> = () => {
   const [featured, setFeatured] = useState<IProduct[]>([]);
   const [latest, setLatest] = useState<IProduct[]>([]);
+  const isMounted = useRef(false);
 
   const getFeatured = async () => {
     try {
       const res = await fetch(`${REACT_APP_SERVER_URL}/products?limit=4`);
       const data: IProduct[] = await res.json();
-      setFeatured(data);
-      setLatest(data);
+      if (isMounted.current) {
+        setFeatured(data);
+        setLatest(data);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    isMounted.current = true;
     getFeatured();
     return () => {
+      isMounted.current = false;
       setFeatured([]);
       setLatest([]);
     };
