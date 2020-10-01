@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+
 import { useStateValue } from '../../store/StateProvider';
 import './Orders.css';
 import Order from '../Order/Order';
@@ -27,6 +29,8 @@ const Orders: React.FC<Props> = () => {
       setOrders([]);
     };
   }, [user?.orders]);
+
+  if (!user?._id) return <Redirect to='/register' />;
 
   return (
     <div className='orders'>

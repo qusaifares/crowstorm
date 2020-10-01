@@ -17,3 +17,9 @@
   font-size: 1.2rem;
   margin: 20px 0;
 }
+
+@media only screen and (max-width: 600px) {
+  .orderConfirmation {
+    text-align: center;
+  }
+}

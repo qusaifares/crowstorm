@@ -83,7 +83,7 @@ const App = () => {
         <Route exact path='/checkout' component={Checkout} />
         <Route
           exact
-          path='/confirmation'
+          path='/confirmation/:orderId'
           render={(props) => <OrderConfirmation {...props} />}
         />
         <Route exact path='*' component={NotFound} />

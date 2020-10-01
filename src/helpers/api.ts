@@ -113,7 +113,9 @@ export const getClientSecret = async (cartTotal: number) => {
   }
 };
 
-export const createOrder = async (orderInfo: IOrder) => {
+export const createOrder = async (
+  orderInfo: IOrder
+): Promise<IOrderPopulated | undefined> => {
   try {
     const body = JSON.stringify(orderInfo);
     const res = await fetch(`${REACT_APP_SERVER_URL}/orders/`, {
@@ -137,6 +139,18 @@ export const getOrders = async (userId: string) => {
       credentials
     });
     const data: IOrderPopulated[] = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrder = async (orderId: string) => {
+  try {
+    const res = await fetch(`${REACT_APP_SERVER_URL}/orders/${orderId}`, {
+      credentials
+    });
+    const data: IOrderPopulated = await res.json();
     return data;
   } catch (error) {
     console.log(error);

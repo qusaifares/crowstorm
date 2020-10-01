@@ -1,50 +1,49 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { getOrders, IOrderPopulated } from '../../helpers/api';
+import { getOrder, getOrders, IOrderPopulated } from '../../helpers/api';
 import { useStateValue } from '../../store/StateProvider';
 import LinkButton from '../Buttons/LinkButton';
 import './OrderConfirmation.css';
 
-interface Props {}
+interface Props {
+  match: any;
+}
 
-const OrderConfirmation: React.FC<Props> = () => {
+const OrderConfirmation: React.FC<Props> = ({ match }) => {
   const [{ user }, dispatch] = useStateValue();
-  const [lastOrder, setLastOrder] = useState<IOrderPopulated>();
+  const [order, setOrder] = useState<IOrderPopulated>();
   const isMounted = useRef(false);
   useEffect(() => {
     isMounted.current = true;
-    const getLastOrder = async () => {
+    const populateOrder = async () => {
       try {
-        const orders = await getOrders(user._id);
-        if (!isMounted.current) return;
-        setLastOrder(
-          orders?.sort(
-            (a, b) => a.orderDate?.getTime() - b.orderDate?.getTime()
-          )[0]
-        );
+        const orderData = await getOrder(match.params.orderId);
+        setOrder(orderData);
       } catch (error) {
         console.log(error);
       }
     };
-    getLastOrder();
+    populateOrder();
     return () => {
       isMounted.current = false;
     };
-  }, [user?._id]);
+  }, [match?.params?.orderId]);
 
-  if (!user._id) return <Redirect to='/' />;
+  if (!user?._id) return <Redirect to='/' />;
 
-  return (
+  return order?._id ? (
     <div className='orderConfirmation'>
       <div className='orderConfirmation__content'>
         <h1>Thank you for your order</h1>
         <p>
-          <strong>Confirmation #{lastOrder?._id}</strong>
+          <strong>Confirmation #{order?._id}</strong>
         </p>
         <LinkButton to='/orders'>View Orders</LinkButton>
       </div>
     </div>
+  ) : (
+    <div className='orderConfirmation'></div>
   );
 };
 

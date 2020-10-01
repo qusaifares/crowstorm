@@ -195,7 +195,7 @@ const Checkout: React.FC<Props> = () => {
       })
       .then(async ({ paymentIntent, error }) => {
         if (paymentIntent?.status === 'succeeded') {
-          await createOrder({
+          const order = await createOrder({
             user: user?._id,
             customerInfo: info,
             items: cart,
@@ -214,7 +214,9 @@ const Checkout: React.FC<Props> = () => {
             setError('');
             setProcessing(false);
           }
-          history.replace('/orders');
+          if (order?._id) {
+            history.replace(`/confirmation/${order._id}`);
+          }
           return;
         }
         if (error?.message) {
