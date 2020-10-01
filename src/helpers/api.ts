@@ -42,13 +42,13 @@ export const signin = async (info: object) => {
   }
 };
 
-export const getCartDetails = async () => {
+export const getCartDetails = async (userId: string) => {
   try {
-    const res = await fetch(`${REACT_APP_SERVER_URL}/users/cart`, {
+    const res = await fetch(`${REACT_APP_SERVER_URL}/users/${userId}`, {
       credentials
     });
     const data = await res.json();
-    return data.cart;
+    return data.cart as CartItem[];
   } catch (error) {
     console.log(error);
   }
@@ -87,7 +87,7 @@ export const getCartDetailsByIds = async (cart: CartItemBase[]) => {
         'Content-Type': 'application/json'
       }
     });
-    const data = await res.json();
+    const data: CartItem[] = await res.json();
     return data;
   } catch (error) {
     console.log(error);

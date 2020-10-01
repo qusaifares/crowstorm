@@ -104,11 +104,11 @@ const Checkout: React.FC<Props> = () => {
   const fetchUpdateTotal = async () => {
     let cartDetails;
     if (user?._id) {
-      cartDetails = await getCartDetails();
+      cartDetails = await getCartDetails(user._id);
     } else {
       cartDetails = await getCartDetailsByIds(cart);
     }
-
+    if (!cartDetails) return;
     setTotals(getCartTotals(cartDetails, taxRate));
   };
 

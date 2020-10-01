@@ -88,8 +88,8 @@ const Cart: React.FC<Props> = () => {
   };
 
   const fetchCartDetails = async () => {
-    if (!cart.length) return;
-    const cartData = await getCartDetails();
+    if (!user._id) return;
+    const cartData = await getCartDetails(user._id);
     if (!Array.isArray(cartData)) return;
     if (!isMounted.current) return;
     setCartDetails(cartData);
