@@ -1,0 +1,16 @@
+.orders {
+  max-width: 1080px;
+  margin: var(--header-height) auto;
+  padding: 0 50px;
+  min-height: calc(100vh - 3 * var(--header-height));
+}
+
+.orders__inner {
+  max-width: 1080px;
+}
+
+@media only screen and (max-width: 800px) {
+  .orders {
+    padding: 0 20px;
+  }
+}

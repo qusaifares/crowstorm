@@ -54,7 +54,7 @@
 
 .header__navLink:hover,
 .header__navLink-active {
-  color: var(--orange);
+  color: var(--primary);
 }
 
 .header__icons {

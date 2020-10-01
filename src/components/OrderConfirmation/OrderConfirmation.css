@@ -1,0 +1,19 @@
+.orderConfirmation {
+  margin: var(--header-height) auto;
+  padding: 0 50px;
+  height: calc(100vh - 3 * var(--header-height));
+  display: grid;
+  place-items: center;
+}
+
+.orderConfirmation__content {
+  display: flex;
+  display: grid;
+  place-items: center;
+  margin-bottom: 40px;
+}
+
+.orderConfirmation p {
+  font-size: 1.2rem;
+  margin: 20px 0;
+}

@@ -92,7 +92,7 @@
 }
 
 .login__switchPrompt a {
-  color: var(--orange);
+  color: var(--primary);
 }
 
 .login__switchPrompt a:hover {

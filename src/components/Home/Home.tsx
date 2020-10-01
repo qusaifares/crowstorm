@@ -18,7 +18,7 @@ const Home: React.FC<Props> = () => {
       <Landing />
       <Featured />
       <Testimonial />
-      <Brands />
+      {/* <Brands /> */}
     </div>
   );
 };

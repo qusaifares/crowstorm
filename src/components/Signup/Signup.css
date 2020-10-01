@@ -89,7 +89,7 @@
 }
 
 .signup__switchPrompt a {
-  color: var(--orange);
+  color: var(--primary);
 }
 
 .signup__switchPrompt a:hover {

@@ -4,7 +4,7 @@ import {
   // facebookProvider,
   // twitterProvider
 } from '../config/firebase';
-import { IUser } from '../customTypes/customTypes';
+import { IUser } from './customTypes';
 const { REACT_APP_SERVER_URL } = process.env;
 
 export const googleAuth = async () => {
@@ -20,7 +20,6 @@ export const googleAuth = async () => {
       },
       email: result.user.email as string
     };
-    console.log(userData);
     const options: RequestInit = {
       method: 'POST',
       body: JSON.stringify(userData),
@@ -30,9 +29,7 @@ export const googleAuth = async () => {
       }
     };
     const res = await fetch(`${REACT_APP_SERVER_URL}/users/google`, options);
-    console.log(res);
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

@@ -20,7 +20,6 @@ const Header: React.FC<Props> = () => {
     if (!user._id) return history.push('/');
     dispatch({ type: ActionType.SET_USER, user: null });
     localStorage.removeItem('email');
-    localStorage.setItem('cart', JSON.stringify([]));
     history.push('/');
   };
   useEffect(() => {
@@ -50,34 +49,57 @@ const Header: React.FC<Props> = () => {
 
         <nav className={navOpen ? 'header__nav-open' : undefined}>
           <NavLink
+            onClick={() => {
+              setNavOpen(false);
+              scrollToLanding();
+            }}
             className='header__navLink'
             activeClassName='header__navLink-active'
-            onClick={scrollToLanding}
             exact
             to='/'
           >
             Home
           </NavLink>
           <NavLink
+            onClick={() => setNavOpen(false)}
             className='header__navLink'
             activeClassName='header__navLink-active'
             to='/products'
           >
             Products
           </NavLink>
-          {/* <NavLink className='header__navLink' activeClassName='header__navLink-active' to='/about'>
+          {/* <NavLink
+          onClick={() => setNavOpen(false)} className='header__navLink' activeClassName='header__navLink-active' to='/about'>
             About
           </NavLink>
-          <NavLink className='header__navLink' activeClassName='header__navLink-active' to='/contact'>
+          <NavLink
+          onClick={() => setNavOpen(false)} className='header__navLink' activeClassName='header__navLink-active' to='/contact'>
             Contact
           </NavLink> */}
           {user?._id ? (
-            <div className='header__navLink' onClick={logout}>
-              Logout
-            </div>
+            <>
+              <NavLink
+                onClick={() => setNavOpen(false)}
+                className='header__navLink'
+                activeClassName='header__navLink-active'
+                to='/orders'
+              >
+                Orders
+              </NavLink>
+              <div
+                className='header__navLink'
+                onClick={(e) => {
+                  setNavOpen(false);
+                  logout(e);
+                }}
+              >
+                Logout
+              </div>
+            </>
           ) : (
             <>
               <NavLink
+                onClick={() => setNavOpen(false)}
                 className='header__navLink'
                 activeClassName='header__navLink-active'
                 to='/login'
@@ -85,6 +107,7 @@ const Header: React.FC<Props> = () => {
                 Login
               </NavLink>
               <NavLink
+                onClick={() => setNavOpen(false)}
                 className='header__navLink'
                 activeClassName='header__navLink-active'
                 to='/register'

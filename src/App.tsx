@@ -11,6 +11,8 @@ import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import Checkout from './components/Checkout/Checkout';
 import NotFound from './components/NotFound/NotFound';
+import Orders from './components/Orders/Orders';
+import OrderConfirmation from './components/OrderConfirmation/OrderConfirmation';
 import { useStateValue } from './store/StateProvider';
 import { ActionType } from './store/reducer';
 
@@ -58,16 +60,6 @@ const App = () => {
   useEffect(() => {
     isMounted.current = true;
     persist();
-    const localCart = localStorage.getItem('cart');
-    console.log(!!localCart);
-    if (localCart) {
-      dispatch({
-        type: ActionType.UPDATE_CART,
-        cart: JSON.parse(localCart || '[]')
-      });
-    } else {
-      localStorage.setItem('cart', JSON.stringify(cart || []));
-    }
     return () => {
       isMounted.current = false;
     };
@@ -85,9 +77,15 @@ const App = () => {
           render={(props) => <Product {...props} />}
         />
         <Route exact path='/cart' component={Cart} />
+        <Route exact path='/orders' component={Orders} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Signup} />
         <Route exact path='/checkout' component={Checkout} />
+        <Route
+          exact
+          path='/confirmation'
+          render={(props) => <OrderConfirmation {...props} />}
+        />
         <Route exact path='*' component={NotFound} />
       </Switch>
       <Footer />

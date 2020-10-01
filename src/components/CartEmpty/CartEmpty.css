@@ -16,3 +16,9 @@
 .cartEmpty__content p {
   margin: 20px 0;
 }
+
+@media only screen and (max-width: 800px) {
+  .cartEmpty {
+    text-align: center;
+  }
+}

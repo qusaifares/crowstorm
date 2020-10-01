@@ -1,5 +1,5 @@
-import { CartItemBase } from './../components/Cart/Cart';
-interface Address {
+import { CartItemBase } from '../components/Cart/Cart';
+export interface Address {
   street: string;
   city: string;
   state: string;

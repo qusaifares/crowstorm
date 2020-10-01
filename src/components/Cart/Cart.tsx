@@ -8,10 +8,15 @@ import { ActionType } from '../../store/reducer';
 import { IProduct } from '../Product/Product';
 import CartEmpty from '../CartEmpty/CartEmpty';
 import OrderTotals from '../OrderTotals/OrderTotals';
-import { getCartDetails, updateCart } from '../../helpers/api';
+import {
+  getCartDetails,
+  updateCart,
+  getCartDetailsByIds
+} from '../../helpers/api';
+import { getCartTotals, Totals } from '../../helpers/functions';
 import { Button, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { red, blue } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   removeWrapper: {
@@ -44,12 +49,13 @@ export interface CartItem {
 }
 
 const Cart: React.FC<Props> = () => {
-  const [{ cart, user }, dispatch] = useStateValue();
-  const taxRate = 0.07;
+  const [{ cart, user, taxRate }, dispatch] = useStateValue();
   const [cartDetails, setCartDetails] = useState<CartItem[]>([]);
-  const [subtotal, setSubtotal] = useState<number>(0);
-  const [tax, setTax] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
+  const [totals, setTotals] = useState<Totals>({
+    subtotal: 0,
+    tax: 0,
+    total: 0
+  });
   const [removing, setRemoving] = useState<number | null>(null);
   const isMounted = useRef(false);
   const classes = useStyles();
@@ -59,7 +65,11 @@ const Cart: React.FC<Props> = () => {
     let tempCart: CartItemBase[] = cart;
     tempCart.splice(i, 1);
     if (user?._id) {
-      const cartData: CartItem[] = await updateCart(tempCart);
+      try {
+        const cartData = await updateCart(tempCart, user._id);
+      } catch (error) {
+        console.log(error);
+      }
     }
     dispatch({
       type: ActionType.UPDATE_CART,
@@ -68,6 +78,13 @@ const Cart: React.FC<Props> = () => {
 
     updateTotal();
     setRemoving(null);
+  };
+
+  const fetchCartByProductIds = async () => {
+    const cartData = await getCartDetailsByIds(cart);
+    if (!Array.isArray(cartData)) return;
+    if (!isMounted.current) return;
+    setCartDetails(cartData);
   };
 
   const fetchCartDetails = async () => {
@@ -79,27 +96,27 @@ const Cart: React.FC<Props> = () => {
   };
 
   const updateTotal = () => {
-    const sum = cartDetails.reduce(
-      (a, v) => a + v.product.price * v.quantity,
-      0
-    );
-    setSubtotal(sum);
-    setTax(sum * taxRate);
-    setTotal(sum + sum * taxRate);
+    setTotals(getCartTotals(cartDetails, taxRate));
   };
 
   useEffect(() => {
     isMounted.current = true;
     return () => {
       isMounted.current = false;
-      setSubtotal(0);
-      setTax(0);
-      setTotal(0);
+      setCartDetails([]);
+      setRemoving(null);
+      setTotals({ subtotal: 0, tax: 0, total: 0 });
     };
   }, []);
 
   useEffect(() => {
-    fetchCartDetails();
+    if (user?._id) {
+      // if logged in
+      fetchCartDetails();
+    } else if (cart.length) {
+      // if logged out
+      fetchCartByProductIds();
+    }
   }, [cart]);
 
   useEffect(() => {
@@ -120,19 +137,22 @@ const Cart: React.FC<Props> = () => {
         </thead>
         <tbody>
           {cartDetails.map((item, i) => (
-            <tr key={item.product._id}>
+            <tr key={item.product?._id}>
               <td>
                 <div className='cart__productInfo'>
-                  <img src={item.product.images[0]} alt={item.product.title} />
+                  <img
+                    src={item.product?.images[0]}
+                    alt={item.product?.title}
+                  />
                   <div className='cart__productInfoText'>
-                    <p>{item.product.title}</p>{' '}
+                    <p>{item.product?.title}</p>{' '}
                     <CurrencyFormat
                       renderText={(value: number) => (
                         <small>Price: {value}</small>
                       )}
                       decimalScale={2}
                       fixedDecimalScale={true}
-                      value={item.product.price}
+                      value={item.product?.price}
                       displayType={'text'}
                       thousandSeparator={true}
                       prefix='$'
@@ -177,7 +197,7 @@ const Cart: React.FC<Props> = () => {
         </tbody>
       </table>
       <div className='cart__total'>
-        <OrderTotals subtotal={subtotal} tax={tax} total={total} />
+        <OrderTotals {...totals} />
       </div>
 
       <LinkButton to='/checkout'>Checkout</LinkButton>

@@ -30,7 +30,7 @@
 
 .productCategory > h2::after {
   content: '';
-  background-color: var(--orange);
+  background-color: var(--primary);
   width: 80px;
   height: 5px;
   border-radius: 5px;

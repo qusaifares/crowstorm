@@ -4,14 +4,15 @@
   line-height: 1.6rem;
   font-size: 16px;
   display: block;
-  background-color: var(--orange);
+  position: relative;
+  background-color: var(--primary);
   color: white;
   padding: 8px 30px;
   outline: none;
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  width: fit-content;
+  width: max-content;
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -22,4 +23,11 @@
 .linkButton:hover,
 .customButton:hover {
   background-color: #563434;
+}
+
+.customButton:disabled {
+  background-color: lightgray;
+  color: #636363;
+  cursor: initial;
+  /* opacity: 0.8; */
 }

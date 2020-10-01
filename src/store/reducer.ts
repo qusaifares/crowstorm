@@ -1,4 +1,4 @@
-import { IUser } from './../customTypes/customTypes';
+import { IUser } from '../helpers/customTypes';
 import { CartItemBase } from '../components/Cart/Cart';
 
 export interface Action {
@@ -8,23 +8,23 @@ export interface Action {
 }
 
 export enum ActionType {
-  UPDATE_CART,
-  SET_USER
+  UPDATE_CART = 0,
+  SET_USER = 1
 }
 
 export interface State {
-  user: object | null;
+  user: IUser | null;
   cart: CartItemBase[];
+  taxRate: number;
 }
 
 export const initialState: State = {
   user: null,
-  cart: []
+  cart: [],
+  taxRate: 0.07
 };
 
 const reducer = (state: State, action: Action) => {
-  console.log(action);
-
   switch (action.type) {
     case ActionType.SET_USER:
       return {
@@ -33,7 +33,6 @@ const reducer = (state: State, action: Action) => {
         user: action.user
       };
     case ActionType.UPDATE_CART:
-      localStorage.setItem('cart', JSON.stringify(action.cart || []));
       if (action.cart) {
         return {
           ...state,

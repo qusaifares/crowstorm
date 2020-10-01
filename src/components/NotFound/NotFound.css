@@ -18,7 +18,7 @@
 }
 
 .notFound h1 > span {
-  color: var(--orange);
+  color: var(--primary);
 }
 
 .notFound h2 {

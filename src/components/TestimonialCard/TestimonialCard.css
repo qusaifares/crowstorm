@@ -9,7 +9,8 @@
 
 .testimonialCard__quote {
   font-size: 58px !important;
-  color: var(--orange);
+  color: var(--primary);
+  transform: rotate(180deg);
 }
 
 .testimonialCard p {

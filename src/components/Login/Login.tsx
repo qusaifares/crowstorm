@@ -57,7 +57,6 @@ const Login: React.FC<Props> = () => {
   };
 
   if (user?._id && window.location.pathname === '/login') {
-    console.log(window.location.pathname);
     return <Redirect to='/' />;
   }
 

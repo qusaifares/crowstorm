@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Product.css';
 import { Link } from 'react-router-dom';
 import CurrencyFormat from 'react-currency-format';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Snackbar, SnackbarProps } from '@material-ui/core';
 import ProductCategory from '../ProductCategory/ProductCategory';
 import ProductCard from '../ProductCard/ProductCard';
 import CustomButton from '../Buttons/CustomButton';
@@ -129,18 +129,16 @@ const Product: React.FC<Props> = ({ match }) => {
     }
     try {
       if (user?._id) {
-        const cartData: CartItem[] = await updateCart(tempCart);
-        console.log('add cart data', cartData);
+        const cartData: CartItemBase[] =
+          (await updateCart(tempCart, user._id)) || [];
         dispatch({
           type: ActionType.UPDATE_CART,
-          cart: cartData.map<CartItemBase>((item) => ({
-            product: item.product._id,
-            quantity: item.quantity
-          }))
+          cart: cartData
         });
       } else {
         dispatch({ type: ActionType.UPDATE_CART, cart: tempCart });
       }
+      setProductSnackbar({ ...productSnackbar, open: true });
       setQuantity(1);
     } catch (error) {
       console.log(error);
@@ -170,11 +168,24 @@ const Product: React.FC<Props> = ({ match }) => {
       }
     }
   }, [product]);
+  const [productSnackbar, setProductSnackbar] = useState<SnackbarProps>({
+    open: false,
+    message: 'Added product to cart.',
+    anchorOrigin: {
+      vertical: 'top',
+      horizontal: 'center'
+    },
+    autoHideDuration: 5000
+  });
 
   if (notFound) return <NotFound />;
 
   return (
     <div className='product'>
+      <Snackbar
+        {...productSnackbar}
+        onClose={() => setProductSnackbar({ ...productSnackbar, open: false })}
+      />
       <div className='product__inner'>
         <div className='product__row product__row1'>
           {product ? (

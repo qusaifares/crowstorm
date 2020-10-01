@@ -2,14 +2,14 @@
   border-collapse: collapse;
   width: 100%;
   max-width: 380px;
-  border-top: 2px solid var(--orange);
+  border-top: 2px solid var(--primary);
 }
 
 .orderTotals th {
   text-align: left;
   padding: 5px;
   color: #fff;
-  background: var(--orange);
+  background: var(--primary);
   font-weight: normal;
 }
 

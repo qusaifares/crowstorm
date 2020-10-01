@@ -14,7 +14,7 @@
   text-align: left;
   padding: 5px;
   color: #fff;
-  background: var(--orange);
+  background: var(--primary);
   font-weight: normal;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .cart__removeProduct {
-  color: var(--orange);
+  color: var(--primary);
   font-size: 12px;
   cursor: pointer;
 }

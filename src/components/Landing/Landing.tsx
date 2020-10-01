@@ -12,7 +12,6 @@ const Landing: React.FC<Props> = () => {
   const [{ user }, dispatch] = useStateValue();
   const goToFeatured = () => {
     const featured = document.getElementById('featured');
-    console.log(featured?.offsetTop);
     // @ts-ignore
     window.scrollTo({ top: featured?.offsetTop - 110, behavior: 'smooth' });
   };

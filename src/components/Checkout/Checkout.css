@@ -4,3 +4,85 @@
   padding: 0 20px;
   min-height: calc(100vh - 3 * var(--header-height));
 }
+
+.checkout__header {
+  text-align: center;
+  margin: 60px 0;
+}
+
+.checkout__inner {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap-reverse;
+}
+
+.checkout__col {
+  flex-basis: 50%;
+  min-width: 350px;
+  margin-bottom: 50px;
+}
+
+.checkout__right {
+  padding: 0 20px;
+}
+
+.checkout__formHeader {
+  margin: 8px;
+}
+
+.checkout__formRow {
+  display: flex;
+  width: calc(100% + 16px);
+}
+
+.checkout__formRow > .MuiFormControl-root {
+  flex: 1;
+}
+
+.checkout__summaryHeader {
+  margin: 8px 8px 20px;
+}
+
+.checkout__cardInfoContainer {
+  --cardElementHeight: 19px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  height: 40px;
+  margin: 8px;
+  padding: 10.5px 14px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.checkout .customButton {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.checkout__error {
+  margin: 30px auto 0;
+  text-align: center;
+  width: max-content;
+  max-width: 100%;
+  padding: 15px 30px;
+  border: 1px solid var(--error-color);
+  color: var(--error-color);
+  background: var(--error-bg);
+}
+
+.checkout .orderTotals {
+  max-width: 700px;
+}
+
+@media only screen and (max-width: 740px) {
+  .checkout__col {
+    flex-basis: 100%;
+  }
+  .checkout .customButton {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .checkout__header {
+    font-size: 1.7rem;
+  }
+}

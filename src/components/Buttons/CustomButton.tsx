@@ -1,7 +1,7 @@
 import React from 'react';
 import './Buttons.css';
 
-interface Props extends React.ComponentPropsWithoutRef<'button'> {}
+interface Props extends React.ComponentProps<'button'> {}
 
 const CustomButton: React.FC<Props> = ({
   className,
