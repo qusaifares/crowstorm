@@ -25,6 +25,8 @@ import { getCartTotals, Totals } from '../../helpers/functions';
 import { Address } from '../../helpers/customTypes';
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCart, selectUser, setCart } from '../../redux/userInfoSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,7 +99,11 @@ const Checkout: React.FC<Props> = () => {
     total: 0
   });
 
-  const [{ user, cart, taxRate }, dispatch] = useStateValue();
+  const [{ taxRate }, _] = useStateValue();
+
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const cart = useSelector(selectCart);
 
   const isMounted = useRef(false);
 
@@ -176,7 +182,7 @@ const Checkout: React.FC<Props> = () => {
       if (user?._id) {
         updateCart([], user._id);
       }
-      dispatch({ type: ActionType.UPDATE_CART, cart: [] });
+      dispatch(setCart([]));
     } catch (error) {
       console.log(error);
     }
@@ -195,29 +201,31 @@ const Checkout: React.FC<Props> = () => {
       })
       .then(async ({ paymentIntent, error }) => {
         if (paymentIntent?.status === 'succeeded') {
-          const order = await createOrder({
-            user: user?._id,
-            customerInfo: info,
-            items: cart,
-            shippingAddress,
-            paymentInfo: {
-              paymentId: paymentIntent.id,
-              paymentType: 'stripe'
-            },
-            amount: paymentIntent.amount,
-            isPaid: true,
-            orderDate: new Date()
-          });
-          if (isMounted.current) {
-            emptyCart();
-            setSucceeded(true);
-            setError('');
-            setProcessing(false);
+          if (user?._id) {
+            const order = await createOrder({
+              user: user?._id,
+              customerInfo: info,
+              items: cart,
+              shippingAddress,
+              paymentInfo: {
+                paymentId: paymentIntent.id,
+                paymentType: 'stripe'
+              },
+              amount: paymentIntent.amount,
+              isPaid: true,
+              orderDate: new Date()
+            });
+            if (isMounted.current) {
+              emptyCart();
+              setSucceeded(true);
+              setError('');
+              setProcessing(false);
+            }
+            if (order?._id) {
+              history.replace(`/confirmation/${order._id}`);
+            }
+            return;
           }
-          if (order?._id) {
-            history.replace(`/confirmation/${order._id}`);
-          }
-          return;
         }
         if (error?.message) {
           setError(error.message);

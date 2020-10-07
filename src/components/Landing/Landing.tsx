@@ -3,13 +3,15 @@ import './Landing.css';
 import CustomButton from '../Buttons/CustomButton';
 
 import { useStateValue } from '../../store/StateProvider';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userInfoSlice';
 
 const { PUBLIC_URL } = process.env;
 
 interface Props {}
 
 const Landing: React.FC<Props> = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const user = useSelector(selectUser);
   const goToFeatured = () => {
     const featured = document.getElementById('featured');
     // @ts-ignore

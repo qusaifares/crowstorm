@@ -13,22 +13,27 @@ import theme from './themes/theme';
 import { StateProvider } from './store/StateProvider';
 import reducer, { initialState } from './store/reducer';
 
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY as string);
 
 ReactDOM.render(
   <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
-      <Router>
-        <ScrollToTop />
-        <ThemeProvider theme={theme}>
-          <Elements stripe={stripePromise}>
-            <App />
-          </Elements>
-        </ThemeProvider>
-      </Router>
-    </StateProvider>
+    <Provider store={store}>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <Router>
+          <ScrollToTop />
+          <ThemeProvider theme={theme}>
+            <Elements stripe={stripePromise}>
+              <App />
+            </Elements>
+          </ThemeProvider>
+        </Router>
+      </StateProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

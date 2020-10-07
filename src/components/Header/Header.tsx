@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
 import { Link, NavLink, useHistory } from 'react-router-dom';
-import { IconButton, Badge } from '@material-ui/core';
+import {
+  IconButton,
+  Badge,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Button
+} from '@material-ui/core';
 import { Menu, Close } from '@material-ui/icons';
 import CartIcon from '../icons/CartIcon';
-import { useStateValue } from '../../store/StateProvider';
-import { ActionType } from '../../store/reducer';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCart, selectUser, setUser } from '../../redux/userInfoSlice';
 
 const { PUBLIC_URL } = process.env;
 
@@ -13,12 +21,16 @@ interface Props {}
 
 const Header: React.FC<Props> = () => {
   const history = useHistory();
-  const [{ user, cart }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const cart = useSelector(selectCart);
   const [background, setBackground] = useState<boolean>(false);
   const [navOpen, setNavOpen] = useState<boolean>(false);
-  const logout = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!user._id) return history.push('/');
-    dispatch({ type: ActionType.SET_USER, user: null });
+  const [logoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
+  const logout = () => {
+    setLogoutModalOpen(false);
+    if (!user?._id) return history.push('/');
+    dispatch(setUser(null));
     localStorage.removeItem('email');
     history.push('/');
   };
@@ -90,11 +102,23 @@ const Header: React.FC<Props> = () => {
                 className='header__navLink'
                 onClick={(e) => {
                   setNavOpen(false);
-                  logout(e);
+                  setLogoutModalOpen(true);
                 }}
               >
                 Logout
               </div>
+              <Dialog
+                open={logoutModalOpen}
+                onClose={() => setLogoutModalOpen(false)}
+              >
+                <DialogContent>
+                  Are you sure you want to sign out?
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setLogoutModalOpen(false)}>No</Button>
+                  <Button onClick={logout}>Yes</Button>
+                </DialogActions>
+              </Dialog>
             </>
           ) : (
             <>

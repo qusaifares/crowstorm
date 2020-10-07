@@ -9,6 +9,18 @@
   max-width: 1080px;
 }
 
+.orders__emptyContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 3 * var(--header-height) - 100px);
+}
+
+.orders__emptyMessage {
+  margin: 20px 0;
+}
+
 @media only screen and (max-width: 800px) {
   .orders {
     padding: 0 20px;
