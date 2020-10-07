@@ -13,13 +13,15 @@ import Checkout from './components/Checkout/Checkout';
 import NotFound from './components/NotFound/NotFound';
 import Orders from './components/Orders/Orders';
 import OrderConfirmation from './components/OrderConfirmation/OrderConfirmation';
-import { useStateValue } from './store/StateProvider';
-import { ActionType } from './store/reducer';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, setUser } from './redux/userInfoSlice';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
 const App = () => {
-  const [{ user, cart }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const history = useHistory();
 
   const isMounted = useRef(false);
@@ -47,7 +49,7 @@ const App = () => {
 
       if (!data._id) throw data;
       if (!isMounted.current) return;
-      dispatch({ type: ActionType.SET_USER, user: data });
+      dispatch(setUser(data));
     } catch (error) {
       console.log(error);
     }

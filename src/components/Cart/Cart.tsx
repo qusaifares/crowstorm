@@ -3,6 +3,10 @@ import './Cart.css';
 import CurrencyFormat from 'react-currency-format';
 
 import LinkButton from '../Buttons/LinkButton';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, selectCart, setCart } from '../../redux/userInfoSlice';
+
 import { useStateValue } from '../../store/StateProvider';
 import { ActionType } from '../../store/reducer';
 import { IProduct } from '../Product/Product';
@@ -17,6 +21,7 @@ import { getCartTotals, Totals } from '../../helpers/functions';
 import { Button, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   removeWrapper: {
@@ -49,7 +54,10 @@ export interface CartItem {
 }
 
 const Cart: React.FC<Props> = () => {
-  const [{ cart, user, taxRate }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const cart = useSelector(selectCart);
+  const [{ taxRate }, _] = useStateValue();
   const [cartDetails, setCartDetails] = useState<CartItem[]>([]);
   const [totals, setTotals] = useState<Totals>({
     subtotal: 0,
@@ -62,7 +70,7 @@ const Cart: React.FC<Props> = () => {
 
   const removeItem = async (i: number) => {
     setRemoving(i);
-    let tempCart: CartItemBase[] = cart;
+    let tempCart: CartItemBase[] = [...cart];
     tempCart.splice(i, 1);
     if (user?._id) {
       try {
@@ -71,10 +79,7 @@ const Cart: React.FC<Props> = () => {
         console.log(error);
       }
     }
-    dispatch({
-      type: ActionType.UPDATE_CART,
-      cart: tempCart
-    });
+    dispatch(setCart(tempCart));
 
     updateTotal();
     setRemoving(null);
@@ -88,7 +93,7 @@ const Cart: React.FC<Props> = () => {
   };
 
   const fetchCartDetails = async () => {
-    if (!user._id) return;
+    if (!user?._id) return;
     const cartData = await getCartDetails(user._id);
     if (!Array.isArray(cartData)) return;
     if (!isMounted.current) return;
@@ -145,7 +150,12 @@ const Cart: React.FC<Props> = () => {
                     alt={item.product?.title}
                   />
                   <div className='cart__productInfoText'>
-                    <p>{item.product?.title}</p>{' '}
+                    <Link
+                      className='cart__productTitle'
+                      to={`/product/${item.product._id}`}
+                    >
+                      {item.product?.title}
+                    </Link>{' '}
                     <CurrencyFormat
                       renderText={(value: number) => (
                         <small>Price: {value}</small>

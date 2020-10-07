@@ -3,10 +3,13 @@ import LinkButton from '../Buttons/LinkButton';
 import './CartEmpty.css';
 
 import { useStateValue } from '../../store/StateProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userInfoSlice';
 interface Props {}
 
 const CartEmpty: React.FC<Props> = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   return (
     <div className='cartEmpty'>
       <div className='cartEmpty__content'>

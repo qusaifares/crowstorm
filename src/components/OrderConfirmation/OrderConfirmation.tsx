@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { getOrder, getOrders, IOrderPopulated } from '../../helpers/api';
-import { useStateValue } from '../../store/StateProvider';
+import { getOrder, IOrderPopulated } from '../../helpers/api';
+import { selectUser } from '../../redux/userInfoSlice';
+
 import LinkButton from '../Buttons/LinkButton';
 import './OrderConfirmation.css';
 
@@ -11,7 +13,7 @@ interface Props {
 }
 
 const OrderConfirmation: React.FC<Props> = ({ match }) => {
-  const [{ user }, dispatch] = useStateValue();
+  const user = useSelector(selectUser);
   const [order, setOrder] = useState<IOrderPopulated>();
   const isMounted = useRef(false);
   useEffect(() => {

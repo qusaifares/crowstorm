@@ -13,6 +13,8 @@ import { ActionType } from '../../store/reducer';
 import { CartItem, CartItemBase } from '../Cart/Cart';
 import productOptions from '../../helpers/productOptions';
 import { updateCart } from '../../helpers/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCart, selectUser, setCart } from '../../redux/userInfoSlice';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
@@ -71,7 +73,9 @@ interface Props {
 
 const Product: React.FC<Props> = ({ match }) => {
   // const history = useHistory();
-  const [{ user, cart }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const cart = useSelector(selectCart);
   const [product, setProduct] = useState<IProduct | undefined>();
   const [relatedProducts, setRelatedProducts] = useState<IProduct[]>([]);
   const [mainImg, setMainImg] = useState<string | null>(null);
@@ -118,10 +122,11 @@ const Product: React.FC<Props> = ({ match }) => {
     const itemIndex = (cart as CartItemBase[]).findIndex(
       (item) => product?._id && item.product === product?._id
     );
-    let tempCart: CartItemBase[] = cart;
+    let tempCart: CartItemBase[] = [...cart].map((item) => ({ ...item }));
     if (itemIndex !== -1) {
       tempCart[itemIndex].quantity = tempCart[itemIndex].quantity + quantity;
     } else {
+      console.log(tempCart, product);
       tempCart.push({
         product: product._id,
         quantity
@@ -131,12 +136,9 @@ const Product: React.FC<Props> = ({ match }) => {
       if (user?._id) {
         const cartData: CartItemBase[] =
           (await updateCart(tempCart, user._id)) || [];
-        dispatch({
-          type: ActionType.UPDATE_CART,
-          cart: cartData
-        });
+        dispatch(setCart(cartData));
       } else {
-        dispatch({ type: ActionType.UPDATE_CART, cart: tempCart });
+        dispatch(setCart(tempCart));
       }
       setProductSnackbar({ ...productSnackbar, open: true });
       setQuantity(1);
@@ -173,9 +175,9 @@ const Product: React.FC<Props> = ({ match }) => {
     message: 'Added product to cart.',
     anchorOrigin: {
       vertical: 'top',
-      horizontal: 'center'
+      horizontal: 'right'
     },
-    autoHideDuration: 5000
+    autoHideDuration: 3000
   });
 
   if (notFound) return <NotFound />;

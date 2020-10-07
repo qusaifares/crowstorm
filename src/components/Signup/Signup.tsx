@@ -14,12 +14,15 @@ import { useStateValue } from '../../store/StateProvider';
 
 import { googleAuth } from '../../helpers/auth';
 import { signup } from '../../helpers/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, setUser } from '../../redux/userInfoSlice';
 
 const { PUBLIC_URL } = process.env;
 interface Props {}
 
 const Signup: React.FC<Props> = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -47,7 +50,7 @@ const Signup: React.FC<Props> = () => {
 
       if (!data._id) throw data;
 
-      dispatch({ type: ActionType.SET_USER, user: data });
+      dispatch(setUser(data));
     } catch (error) {
       setErrorText(error.message);
     }
@@ -56,7 +59,7 @@ const Signup: React.FC<Props> = () => {
   const handleGoogleAuth = async () => {
     try {
       const data = await googleAuth();
-      dispatch({ type: ActionType.SET_USER, user: data });
+      dispatch(setUser(data));
     } catch (error) {
       console.log(error);
     }

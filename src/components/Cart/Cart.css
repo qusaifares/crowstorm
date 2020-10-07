@@ -47,6 +47,14 @@
   flex-wrap: wrap;
 }
 
+.cart__productTitle {
+  display: block;
+}
+
+.cart__productTitle:hover {
+  text-decoration: underline;
+}
+
 .cart__total {
   display: flex;
   justify-content: flex-end;
