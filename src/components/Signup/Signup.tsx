@@ -9,9 +9,6 @@ import GoogleLogo from '../icons/GoogleLogo';
 // import TwitterLogo from '../icons/TwitterLogo';
 // import FacebookLogo from '../icons/FacebookLogo';
 
-import { ActionType } from '../../store/reducer';
-import { useStateValue } from '../../store/StateProvider';
-
 import { googleAuth } from '../../helpers/auth';
 import { signup } from '../../helpers/api';
 import { useDispatch, useSelector } from 'react-redux';
