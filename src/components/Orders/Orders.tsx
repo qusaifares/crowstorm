@@ -19,7 +19,7 @@ const Orders: React.FC<Props> = () => {
     try {
       if (!user) return;
       const ordersData = await getOrders(user._id as string);
-      setOrders(ordersData || []);
+      setOrders(ordersData?.reverse() || []);
     } catch (error) {
       console.log(error);
     }
