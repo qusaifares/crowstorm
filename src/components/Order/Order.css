@@ -44,8 +44,8 @@
 }
 
 .order__itemImg {
-  width: 150px;
-  height: 200px;
+  width: 135px;
+  height: 180px;
   object-fit: cover;
   margin-right: 30px;
 }
@@ -72,6 +72,10 @@
   display: block;
   font-weight: 600;
   font-size: 1.3rem;
+}
+
+.order__itemTitle:hover {
+  text-decoration: underline;
 }
 
 .order__itemShippingDate {
