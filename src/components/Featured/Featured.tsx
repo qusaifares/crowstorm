@@ -55,11 +55,11 @@ const Featured: React.FC<Props> = () => {
           <ProductCard key={prod._id} product={prod} />
         ))}
       </ProductCategory>
-      <ProductCategory title='Latest Products'>
+      {/* <ProductCategory title='Latest Products'>
         {featured.map((prod) => (
           <ProductCard key={prod._id} product={prod} />
         ))}
-      </ProductCategory>
+      </ProductCategory> */}
       <Offer />
     </div>
   );
