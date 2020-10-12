@@ -126,7 +126,6 @@ const Product: React.FC<Props> = ({ match }) => {
     if (itemIndex !== -1) {
       tempCart[itemIndex].quantity = tempCart[itemIndex].quantity + quantity;
     } else {
-      console.log(tempCart, product);
       tempCart.push({
         product: product._id,
         quantity
