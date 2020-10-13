@@ -15,7 +15,7 @@ Main technologies used in this application.
 
 - [TypeScript](https://www.typescriptlang.org)
 - [React](https://reactjs.org)
-  - React Context (State Management)
+- [Redux](https://react-redux.js.org/)
 - [React Router](https://reactrouter.com/)
 - [Material-UI](https://material-ui.com/)
 - [Stripe Checkout](https://www.npmjs.com/package/react-stripe-checkout)
